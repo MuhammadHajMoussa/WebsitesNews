@@ -1,0 +1,30 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="d-inline">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="nav-link btn btn-link p-0">تسجيل الخروج</button>
+        </form>
+
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-page="/Profile/Index">الملف الشخصي</a>
+        </li>
+
+        <li class="nav-item">
+            <span class="nav-link text-dark">مرحبا @UserManager.GetUserName(User)!</span>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">إنشاء حساب</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">تسجيل الدخول</a>
+        </li>
+    }
+</ul>

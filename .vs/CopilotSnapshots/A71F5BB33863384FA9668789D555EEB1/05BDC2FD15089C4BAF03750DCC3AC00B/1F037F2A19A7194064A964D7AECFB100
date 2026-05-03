@@ -1,0 +1,107 @@
+﻿
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using NewsSite.Data;
+using NewsSite.Models;
+using Microsoft.Net.Http.Headers;
+using System;
+
+namespace NewsSite.Controllers;
+
+public class NewsFilesController : Controller
+{
+    private readonly ApplicationDbContext _context;
+
+    public NewsFilesController(ApplicationDbContext context)
+    {
+        _context = context;
+    }
+
+    [AllowAnonymous]
+    public async Task<IActionResult> Videos(int? newsId)
+    {
+        var videos = _context.Videos.AsQueryable();
+        if (newsId.HasValue)
+        {
+            videos = videos.Where(v => v.NewsId == newsId.Value);
+            ViewBag.NewsId = newsId.Value;
+        }
+        return View(await videos.ToListAsync());
+    }
+
+    [AllowAnonymous]
+    public async Task<IActionResult> Images(int? newsId)
+    {
+        var images = _context.Images.AsQueryable();
+        if (newsId.HasValue)
+        {
+            images = images.Where(i => i.NewsId == newsId.Value);
+            ViewBag.NewsId = newsId.Value;
+        }
+        return View(await images.ToListAsync());
+    }
+
+    [AllowAnonymous]
+    public async Task<IActionResult> Documents(int? newsId)
+    {
+        var documents = _context.Documents.AsQueryable();
+        if (newsId.HasValue)
+        {
+            documents = documents.Where(d => d.NewsId == newsId.Value);
+            ViewBag.NewsId = newsId.Value;
+        }
+        return View(await documents.ToListAsync());
+    }
+
+    [AllowAnonymous]
+    public async Task<IActionResult> GetFile(int id, string type)
+    {
+        byte[] fileContent;
+        string fileName;
+        string fileType;
+
+        switch (type.ToLower())
+        {
+            case "video":
+                var video = await _context.Videos.FindAsync(id);
+                if (video == null) return NotFound();
+                fileContent = video.FileContent;
+                fileName = video.FileName;
+                fileType = video.FileType;
+                break;
+            case "image":
+                var image = await _context.Images.FindAsync(id);
+                if (image == null) return NotFound();
+                fileContent = image.FileContent;
+                fileName = image.FileName;
+                fileType = image.FileType;
+                break;
+            case "document":
+                var document = await _context.Documents.FindAsync(id);
+                if (document == null) return NotFound();
+                fileContent = document.FileContent;
+                fileName = document.FileName;
+                fileType = document.FileType;
+                break;
+            default:
+                return BadRequest("نوع الملف غير صالح");
+        }
+
+        // التأكد من إرجاع نوع المحتوى الصحيح للفيديوهات
+        if (type.ToLower() == "video")
+        {
+            // تحويل أنواع الملفات إلى تنسيقات مدعومة
+            if (!fileType.Equals("video/mp4", StringComparison.OrdinalIgnoreCase) &&
+                !fileType.Equals("video/webm", StringComparison.OrdinalIgnoreCase) &&
+                !fileType.Equals("video/ogg", StringComparison.OrdinalIgnoreCase))
+            {
+                fileType = "video/mp4"; // افتراض MP4 إذا لم يكن النوع مدعومًا
+            }
+        }
+
+        // إضافة رأس Content-Disposition لدعم التنزيل إذا لزم الأمر
+        Response.Headers["Content-Disposition"] = $"inline; filename=\"{fileName}\"";
+        return File(fileContent, fileType);
+    }
+}

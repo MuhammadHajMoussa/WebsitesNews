@@ -1,0 +1,32 @@
+﻿@model IEnumerable<NewsSite.Models.News>
+
+@{
+    ViewData["Title"] = "الأخبار";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>الأخبار</h2>
+    <a asp-action="Create" class="btn btn-accent">إضافة خبر جديد</a>
+</div>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#newsImageModal@item.Id">
+                    <img src="@(item.Images != null && item.Images.Any() ? Url.Action("GetFile","NewsFiles", new { id = item.Images.First().Id, type = "image" }) : Url.Content("~/images/placeholder-thumb.jpg"))" class="card-img-top" alt="@item.Title" />
+                </a>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">@item.Title</h5>
+                    <p class="meta-small">@item.PublishDate.ToShortDateString() • @item.Category.Name</p>
+                    <p class="card-text text-truncate">@item.Content</p>
+                    <div class="mt-auto d-flex justify-content-between align-items-center">
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">تفاصيل</a>
+                        <div class="meta-small">@item.Views views • @item.Likes ❤</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

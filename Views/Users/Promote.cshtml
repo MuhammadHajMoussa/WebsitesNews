@@ -1,0 +1,70 @@
+﻿@model NewsSite.Models.ViewModels.PromoteViewModel
+
+@{
+    // تعيين عنوان الصفحة مباشرة مع التحقق من السياق
+    var title = "ترقية المستخدم";
+    if (ViewContext?.ViewData != null)
+    {
+        ViewContext.ViewData["Title"] = title;
+    }
+    else
+    {
+        // إذا كان السياق غير متاح، نستخدم متغير محلي فقط
+    }
+}
+
+<h1>@title</h1>
+
+@if (Model != null)
+{
+    @if (!string.IsNullOrEmpty(Model.UserId))
+    {
+        <form method="post" action="@Url.Action("Promote", "Users")">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="UserId" value="@Model.UserId" />
+            <div class="form-group">
+                <label for="NewRole">الدور الجديد</label>
+                <select name="NewRole" class="form-control">
+                    <option value="">-- اختر دورًا --</option>
+                    @foreach (var role in Model.Roles ?? new[] { "Subscriber", "Author", "Admin", "Owner" })
+                    {
+                        <option value="@role">@role</option>
+                    }
+                </select>
+                <span class="text-danger">@ViewData.ModelState["NewRole"]?.Errors.FirstOrDefault()?.ErrorMessage</span>
+            </div>
+            <button type="submit" class="btn btn-primary">ترقية</button>
+            <a href="@Url.Action("Index", "Users")" class="btn btn-secondary">رجوع</a>
+            <div class="text-danger">
+                @if (ViewData.ModelState != null)
+                {
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        @error.ErrorMessage
+
+                        <br />
+                    }
+                }
+            </div>
+        </form>
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            معرف المستخدم غير صالح. <a href="@Url.Action("Index", "Users")">رجوع إلى القائمة</a>
+        </div>
+    }
+}
+else
+{
+    <div class="alert alert-danger">
+        معرف المستخدم غير صالح. <a href="@Url.Action("Index", "Users")">رجوع إلى القائمة</a>
+    </div>
+}
+
+@section Scripts {
+    @if (Html.ViewContext != null)
+    {
+        @await Html.PartialAsync("_ValidationScriptsPartial")
+    }
+}

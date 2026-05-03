@@ -1,0 +1,38 @@
+﻿@model IEnumerable<NewsSite.Models.ViewModels.UserManagementViewModel>
+
+@{
+    ViewData["Title"] = "إدارة المستخدمين";
+}
+
+<h1>إدارة المستخدمين</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>المعرف</th>
+            <th>اسم المستخدم</th>
+            <th>البريد الإلكتروني</th>
+            <th>الأدوار</th>
+            <th>الإجراءات</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>@string.Join(", ", user.Roles)</td>
+                <td>
+                    <a asp-action="Promote" asp-route-userId="@user.Id" class="btn btn-primary">ترقية</a>
+                    <form asp-action="Delete" method="post" style="display:inline;">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="userId" value="@user.Id" />
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('هل أنت متأكد؟')">حذف</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

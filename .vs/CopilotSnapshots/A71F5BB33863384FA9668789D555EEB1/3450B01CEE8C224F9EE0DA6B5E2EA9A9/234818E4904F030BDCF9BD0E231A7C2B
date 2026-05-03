@@ -1,0 +1,436 @@
+﻿
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using NewsSite.Models.ViewModels;
+using NewsSite.Data;
+using NewsSite.Services;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using System.IO;
+using NewsSite.Models;
+
+namespace NewsSite.Controllers;
+
+[Authorize]
+public class NewsController : Controller
+{
+    private readonly INewsService _newsService;
+    private readonly ApplicationDbContext _context;
+    // Upload constraints
+    private const int MaxFilesCount = 5;
+    private const long MaxFileSize = 100_000_000; // 100 MB per file
+    private const long MaxTotalUploadSize = 200_000_000; // 200 MB total per request
+
+    public NewsController(INewsService newsService, ApplicationDbContext context)
+    {
+        _newsService = newsService;
+        _context = context;
+    }
+
+    private static string SanitizeFileName(string fileName)
+    {
+        if (string.IsNullOrEmpty(fileName)) return "file";
+        var invalid = Path.GetInvalidFileNameChars();
+        var sb = new System.Text.StringBuilder();
+        foreach (var ch in fileName)
+        {
+            if (char.IsControl(ch) || invalid.Contains(ch) || ch > 127)
+            {
+                sb.Append('_');
+            }
+            else sb.Append(ch);
+        }
+        var result = sb.ToString();
+        return result.Length > 200 ? result.Substring(0, 200) : result;
+    }
+
+    [AllowAnonymous]
+    public async Task<IActionResult> Index(string category = null)
+    {
+        var news = await _newsService.GetAllNewsAsync(category);
+        return View(news);
+    }
+
+    [AllowAnonymous]
+    public async Task<IActionResult> Search(string query)
+    {
+        var news = await _newsService.GetAllNewsAsync();
+        if (!string.IsNullOrEmpty(query))
+        {
+            news = news.Where(n => n.Title.Contains(query) || n.Content.Contains(query)).ToList();
+        }
+        return View("Index", news);
+    }
+
+    [AllowAnonymous]
+    public async Task<IActionResult> Details(int id)
+    {
+        var news = await _newsService.GetNewsByIdAsync(id);
+        if (news == null) return NotFound();
+        return View(news);
+    }
+
+    [Authorize(Roles = "Author,Admin,Owner")]
+    public IActionResult Create()
+    {
+        ViewBag.Categories = _context.Categories.ToList();
+        return View(new NewsViewModel());
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Author,Admin,Owner")]
+    public async Task<IActionResult> Create(NewsViewModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            // Validate files count and total size early
+            var postedFiles = model.Files?.Where(f => f != null && f.Length > 0).ToList() ?? new List<IFormFile>();
+            if (postedFiles.Count > MaxFilesCount)
+            {
+                ModelState.AddModelError(string.Empty, $"عدد الملفات المسموح به هو {MaxFilesCount} أو أقل.");
+                ViewBag.Categories = _context.Categories.ToList();
+                return View(model);
+            }
+            long totalSize = postedFiles.Sum(f => f.Length);
+            if (totalSize > MaxTotalUploadSize)
+            {
+                ModelState.AddModelError(string.Empty, "حجم الملفات المرسل يتجاوز الحد المسموح إجمالاً.");
+                ViewBag.Categories = _context.Categories.ToList();
+                return View(model);
+            }
+
+            // إضافة الخبر
+            var newsId = await _newsService.AddNewsAsync(model, User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            // معالجة الملفات إذا وُجدت
+            if (model.Files != null && model.Files.Any(f => f != null && f.Length > 0))
+            {
+                for (int i = 0; i < model.Files.Count; i++)
+                {
+                    var file = model.Files[i];
+                    var fileTitle = model.FileTitles[i];
+                    var fileType = model.FileTypes[i];
+
+                    if (file == null || file.Length == 0) continue; // تخطي الملفات الفارغة
+
+                    if (string.IsNullOrWhiteSpace(fileTitle))
+                    {
+                        ModelState.AddModelError($"FileTitles[{i}]", "عنوان الملف مطلوب عند رفع ملف.");
+                        ViewBag.Categories = _context.Categories.ToList();
+                        return View(model);
+                    }
+
+                    if (string.IsNullOrWhiteSpace(fileType))
+                    {
+                        ModelState.AddModelError($"FileTypes[{i}]", "يجب اختيار نوع الملف (فيديو، صورة، أو مستند).");
+                        ViewBag.Categories = _context.Categories.ToList();
+                        return View(model);
+                    }
+
+                    if (file.Length > MaxFileSize)
+                    {
+                        ModelState.AddModelError($"Files[{i}]", $"حجم الملف يتجاوز الحد المسموح ({MaxFileSize / 1_000_000} ميجابايت).");
+                        ViewBag.Categories = _context.Categories.ToList();
+                        return View(model);
+                    }
+
+                    using var memoryStream = new MemoryStream();
+                    await file.CopyToAsync(memoryStream);
+                    var fileContent = memoryStream.ToArray();
+
+                    // التحقق من صيغة الملف
+                    string contentType = file.ContentType.ToLower();
+                    var fileNameSafe = SanitizeFileName(Path.GetFileName(file.FileName));
+                    if (fileType.ToLower() == "video")
+                    {
+                        if (!contentType.Equals("video/mp4") &&
+                            !contentType.Equals("video/webm") &&
+                            !contentType.Equals("video/ogg"))
+                        {
+                            ModelState.AddModelError($"Files[{i}]", "تنسيق الفيديو غير مدعوم. التنسيقات المدعومة هي: MP4، WebM، Ogg.");
+                            ViewBag.Categories = _context.Categories.ToList();
+                            return View(model);
+                        }
+                    }
+                    else if (fileType.ToLower() == "image")
+                    {
+                        if (!contentType.StartsWith("image/"))
+                        {
+                            ModelState.AddModelError($"Files[{i}]", "تنسيق الصورة غير مدعوم. التنسيقات المدعومة هي: JPEG، PNG، GIF، إلخ.");
+                            ViewBag.Categories = _context.Categories.ToList();
+                            return View(model);
+                        }
+                    }
+                    else if (fileType.ToLower() == "document")
+                    {
+                        if (!contentType.Equals("application/pdf") &&
+                            !contentType.Equals("text/plain"))
+                        {
+                            ModelState.AddModelError($"Files[{i}]", "تنسيق المستند غير مدعوم. التنسيقات المدعومة هي: PDF، Text.");
+                            ViewBag.Categories = _context.Categories.ToList();
+                            return View(model);
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError($"FileTypes[{i}]", "نوع الملف غير صالح.");
+                        ViewBag.Categories = _context.Categories.ToList();
+                        return View(model);
+                    }
+
+                    switch (fileType.ToLower())
+                    {
+                        case "video":
+                            var video = new Video
+                            {
+                                NewsId = newsId,
+                                Title = fileTitle,
+                                FileName = fileNameSafe,
+                                FileContent = fileContent,
+                                FileType = contentType,
+                                FileSize = file.Length,
+                                UploadDate = DateTime.Now
+                            };
+                            _context.Videos.Add(video);
+                            break;
+                        case "image":
+                            var image = new Image
+                            {
+                                NewsId = newsId,
+                                Title = fileTitle,
+                                FileName = fileNameSafe,
+                                FileContent = fileContent,
+                                FileType = contentType,
+                                FileSize = file.Length,
+                                UploadDate = DateTime.Now
+                            };
+                            _context.Images.Add(image);
+                            break;
+                        case "document":
+                            var document = new Document
+                            {
+                                NewsId = newsId,
+                                Title = fileTitle,
+                                FileName = fileNameSafe,
+                                FileContent = fileContent,
+                                FileType = contentType,
+                                FileSize = file.Length,
+                                UploadDate = DateTime.Now
+                            };
+                            _context.Documents.Add(document);
+                            break;
+                    }
+                }
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        // إضافة رسالة خطأ عامة إذا لم يتم التحقق من النموذج
+        ModelState.AddModelError(string.Empty, "يرجى تصحيح الأخطاء في النموذج وإعادة المحاولة.");
+        ViewBag.Categories = _context.Categories.ToList();
+        return View(model);
+    }
+
+    [Authorize(Roles = "Author,Admin,Owner")]
+    public async Task<IActionResult> Edit(int id)
+    {
+        var news = await _newsService.GetNewsByIdAsync(id);
+        if (news == null) return NotFound();
+
+        var model = new NewsViewModel
+        {
+            Id = news.Id,
+            Title = news.Title,
+            Content = news.Content,
+            CategoryId = news.CategoryId
+        };
+        ViewBag.Categories = _context.Categories.ToList();
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Author,Admin,Owner")]
+    public async Task<IActionResult> Edit(NewsViewModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            try
+            {
+                await _newsService.UpdateNewsAsync(model, User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                // معالجة الملفات الجديدة إذا وُجدت
+                if (model.Files != null && model.Files.Any(f => f != null && f.Length > 0))
+                {
+                    for (int i = 0; i < model.Files.Count; i++)
+                    {
+                        var file = model.Files[i];
+                        var fileTitle = model.FileTitles[i];
+                        var fileType = model.FileTypes[i];
+
+                        if (file == null || file.Length == 0) continue;
+
+                        if (string.IsNullOrWhiteSpace(fileTitle))
+                        {
+                            ModelState.AddModelError($"FileTitles[{i}]", "عنوان الملف مطلوب عند رفع ملف.");
+                            ViewBag.Categories = _context.Categories.ToList();
+                            return View(model);
+                        }
+
+                        if (string.IsNullOrWhiteSpace(fileType))
+                        {
+                            ModelState.AddModelError($"FileTypes[{i}]", "يجب اختيار نوع الملف (فيديو، صورة، أو مستند).");
+                            ViewBag.Categories = _context.Categories.ToList();
+                            return View(model);
+                        }
+
+                        if (file.Length > 100_000_000) // 100 ميجابايت
+                        {
+                            ModelState.AddModelError($"Files[{i}]", "حجم الملف يتجاوز الحد المسموح (100 ميجابايت).");
+                            ViewBag.Categories = _context.Categories.ToList();
+                            return View(model);
+                        }
+
+                        using var memoryStream = new MemoryStream();
+                        await file.CopyToAsync(memoryStream);
+                        var fileContent = memoryStream.ToArray();
+
+                        string contentType = file.ContentType.ToLower();
+                        if (fileType.ToLower() == "video")
+                        {
+                            if (!contentType.Equals("video/mp4") &&
+                                !contentType.Equals("video/webm") &&
+                                !contentType.Equals("video/ogg"))
+                            {
+                                ModelState.AddModelError($"Files[{i}]", "تنسيق الفيديو غير مدعوم. التنسيقات المدعومة هي: MP4، WebM، Ogg.");
+                                ViewBag.Categories = _context.Categories.ToList();
+                                return View(model);
+                            }
+                        }
+                        else if (fileType.ToLower() == "image")
+                        {
+                            if (!contentType.StartsWith("image/"))
+                            {
+                                ModelState.AddModelError($"Files[{i}]", "تنسيق الصورة غير مدعوم. التنسيقات المدعومة هي: JPEG، PNG، GIF، إلخ.");
+                                ViewBag.Categories = _context.Categories.ToList();
+                                return View(model);
+                            }
+                        }
+                        else if (fileType.ToLower() == "document")
+                        {
+                            if (!contentType.Equals("application/pdf") &&
+                                !contentType.Equals("text/plain"))
+                            {
+                                ModelState.AddModelError($"Files[{i}]", "تنسيق المستند غير مدعوم. التنسيقات المدعومة هي: PDF، Text.");
+                                ViewBag.Categories = _context.Categories.ToList();
+                                return View(model);
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError($"FileTypes[{i}]", "نوع الملف غير صالح.");
+                            ViewBag.Categories = _context.Categories.ToList();
+                            return View(model);
+                        }
+
+                        switch (fileType.ToLower())
+                        {
+                            case "video":
+                                var video = new Video
+                                {
+                                    NewsId = model.Id,
+                                    Title = fileTitle,
+                                    FileName = Path.GetFileName(file.FileName),
+                                    FileContent = fileContent,
+                                    FileType = contentType,
+                                    FileSize = file.Length,
+                                    UploadDate = DateTime.Now
+                                };
+                                _context.Videos.Add(video);
+                                break;
+                            case "image":
+                                var image = new Image
+                                {
+                                    NewsId = model.Id,
+                                    Title = fileTitle,
+                                    FileName = Path.GetFileName(file.FileName),
+                                    FileContent = fileContent,
+                                    FileType = contentType,
+                                    FileSize = file.Length,
+                                    UploadDate = DateTime.Now
+                                };
+                                _context.Images.Add(image);
+                                break;
+                            case "document":
+                                var document = new Document
+                                {
+                                    NewsId = model.Id,
+                                    Title = fileTitle,
+                                    FileName = Path.GetFileName(file.FileName),
+                                    FileContent = fileContent,
+                                    FileType = contentType,
+                                    FileSize = file.Length,
+                                    UploadDate = DateTime.Now
+                                };
+                                _context.Documents.Add(document);
+                                break;
+                        }
+                    }
+                    await _context.SaveChangesAsync();
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            catch (UnauthorizedAccessException)
+            {
+                ModelState.AddModelError(string.Empty, "غير مصرح لك بتعديل هذا الخبر.");
+                ViewBag.Categories = _context.Categories.ToList();
+                return View(model);
+            }
+        }
+
+        // إضافة رسالة خطأ عامة إذا لم يتم التحقق من النموذج
+        ModelState.AddModelError(string.Empty, "يرجى تصحيح الأخطاء في النموذج وإعادة المحاولة.");
+        ViewBag.Categories = _context.Categories.ToList();
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Author,Admin,Owner")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        try
+        {
+            await _newsService.DeleteNewsAsync(id, User.FindFirstValue(ClaimTypes.NameIdentifier));
+            return RedirectToAction(nameof(Index));
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Forbid();
+        }
+    }
+
+    [HttpPost]
+    [Authorize(Roles = "Subscriber,Author,Admin,Owner")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Like(int id)
+    {
+        await _newsService.LikeNewsAsync(id);
+        return RedirectToAction(nameof(Details), new { id });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Subscriber,Author,Admin,Owner")]
+    public async Task<IActionResult> AddComment(int newsId, string content)
+    {
+        if (!string.IsNullOrEmpty(content))
+        {
+            await _newsService.AddCommentAsync(newsId, content, User.FindFirstValue(ClaimTypes.NameIdentifier));
+        }
+        return RedirectToAction(nameof(Details), new { id = newsId });
+    }
+}   

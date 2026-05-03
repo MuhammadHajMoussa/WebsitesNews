@@ -1,0 +1,165 @@
+﻿
+
+@model NewsSite.Models.ViewModels.NewsViewModel
+
+@{
+    ViewData["Title"] = "إنشاء خبر جديد";
+}
+
+<h1>إنشاء خبر جديد</h1>
+
+@{
+    var modelErrors = ViewData?.ModelState?.Values.SelectMany(v => v.Errors) ?? Enumerable.Empty<Microsoft.AspNetCore.Mvc.ModelBinding.ModelError>();
+}
+
+@if (modelErrors.Any())
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>خطأ:</strong> يرجى تصحيح الأخطاء التالية:
+        <ul>
+            @foreach (var modelError in modelErrors)
+            {
+                <li>@modelError.ErrorMessage</li>
+            }
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<form asp-action="Create" method="post" enctype="multipart/form-data" id="createNewsForm">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="None" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Title" class="control-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Content" class="control-label"></label>
+        <textarea asp-for="Content" class="form-control"></textarea>
+        <span asp-validation-for="Content" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="CategoryId" class="control-label"></label>
+        <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList(ViewBag.Categories, "Id", "Name"))"></select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>الملفات (اختياري)</label>
+        <div id="fileInputs">
+            <div class="file-input-group mb-3">
+                <select name="FileTypes" class="form-control">
+                    <option value="">اختر نوع الملف (اختياري)</option>
+                    <option value="video">فيديو (MP4، WebM، Ogg)</option>
+                    <option value="image">صورة</option>
+                    <option value="document">مستند</option>
+                </select>
+                <span class="text-danger field-validation-error" data-valmsg-for="FileTypes" data-valmsg-replace="true"></span>
+                <input type="text" name="FileTitles" class="form-control mt-2" placeholder="عنوان الملف (مطلوب إذا تم رفع ملف)" />
+                <span class="text-danger field-validation-error" data-valmsg-for="FileTitles" data-valmsg-replace="true"></span>
+                <input type="file" name="Files" class="form-control mt-2" accept="video/mp4,video/webm,video/ogg,image/*,application/pdf,text/plain" />
+                <span class="text-danger field-validation-error" data-valmsg-for="Files" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        <button type="button" class="btn btn-secondary mt-2" onclick="addFileInput()">إضافة ملف آخر</button>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="إنشاء" class="btn btn-primary" />
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        function addFileInput() {
+            const fileInputs = document.getElementById('fileInputs');
+            const newInputGroup = document.createElement('div');
+            newInputGroup.className = 'file-input-group mb-3';
+            newInputGroup.innerHTML = `
+                <select name="FileTypes" class="form-control">
+                    <option value="">اختر نوع الملف (اختياري)</option>
+                    <option value="video">فيديو (MP4، WebM، Ogg)</option>
+                    <option value="image">صورة</option>
+                    <option value="document">مستند</option>
+                </select>
+                <span class="text-danger field-validation-error" data-valmsg-for="FileTypes" data-valmsg-replace="true"></span>
+                <input type="text" name="FileTitles" class="form-control mt-2" placeholder="عنوان الملف (مطلوب إذا تم رفع ملف)" />
+                <span class="text-danger field-validation-error" data-valmsg-for="FileTitles" data-valmsg-replace="true"></span>
+                <input type="file" name="Files" class="form-control mt-2" accept="video/mp4,video/webm,video/ogg,image/*,application/pdf,text/plain" />
+                <span class="text-danger field-validation-error" data-valmsg-for="Files" data-valmsg-replace="true"></span>
+                <button type="button" class="btn btn-danger mt-2" onclick="this.parentElement.remove()">إزالة</button>
+            `;
+            fileInputs.appendChild(newInputGroup);
+        }
+
+        // تحقق من صحة الملفات إذا تم اختيارها
+        document.getElementById('createNewsForm').addEventListener('submit', function (event) {
+            const fileInputs = document.querySelectorAll('input[name="Files"]');
+            const fileTitles = document.querySelectorAll('input[name="FileTitles"]');
+            const fileTypes = document.querySelectorAll('select[name="FileTypes"]');
+            let hasError = false;
+
+            // إزالة الأخطاء السابقة
+            document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+            document.querySelectorAll('.invalid-feedback').forEach(el => el.remove());
+
+            fileInputs.forEach((fileInput, index) => {
+                if (fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    const contentType = file.type.toLowerCase();
+                    const selectedType = fileTypes[index].value.toLowerCase();
+
+                    // التحقق من العنوان
+                    if (!fileTitles[index].value.trim()) {
+                        hasError = true;
+                        fileTitles[index].classList.add('is-invalid');
+                        const errorDiv = document.createElement('div');
+                        errorDiv.className = 'invalid-feedback';
+                        errorDiv.textContent = 'عنوان الملف مطلوب عند رفع ملف.';
+                        fileTitles[index].parentElement.appendChild(errorDiv);
+                    }
+
+                    // التحقق من نوع الملف
+                    if (!selectedType) {
+                        hasError = true;
+                        fileTypes[index].classList.add('is-invalid');
+                        const errorDiv = document.createElement('div');
+                        errorDiv.className = 'invalid-feedback';
+                        errorDiv.textContent = 'يجب اختيار نوع الملف.';
+                        fileTypes[index].parentElement.appendChild(errorDiv);
+                    }
+
+                    // التحقق من صيغة الملف
+                    if (selectedType === 'video' &&
+                        !['video/mp4', 'video/webm', 'video/ogg'].includes(contentType)) {
+                        hasError = true;
+                        fileInput.classList.add('is-invalid');
+                        const errorDiv = document.createElement('div');
+                        errorDiv.className = 'invalid-feedback';
+                        errorDiv.textContent = 'تنسيق الفيديو غير مدعوم. التنسيقات المدعومة هي: MP4, WebM, Ogg';
+                        fileInput.parentElement.appendChild(errorDiv);
+                    } else if (selectedType === 'image' && !contentType.startsWith('image/')) {
+                        hasError = true;
+                        fileInput.classList.add('is-invalid');
+                        const errorDiv = document.createElement('div');
+                        errorDiv.className = 'invalid-feedback';
+                        errorDiv.textContent = 'تنسيق الصورة غير مدعوم. التنسيقات المدعومة هي: JPEG, PNG, GIF, إلخ.';
+                        fileInput.parentElement.appendChild(errorDiv);
+                    } else if (selectedType === 'document' &&
+                               !['application/pdf', 'text/plain'].includes(contentType)) {
+                        hasError = true;
+                        fileInput.classList.add('is-invalid');
+                        const errorDiv = document.createElement('div');
+                        errorDiv.className = 'invalid-feedback';
+                        errorDiv.textContent = 'تنسيق المستند غير مدعوم. التنسيقات المدعومة هي: PDF, Text';
+                        fileInput.parentElement.appendChild(errorDiv);
+                    }
+                }
+            });
+
+            if (hasError) {
+                event.preventDefault();
+            }
+        });
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+}

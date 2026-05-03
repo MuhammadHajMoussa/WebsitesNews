@@ -1,0 +1,14 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using NewsSite.Models;
+using System.ComponentModel.DataAnnotations;
+
+namespace NewsSite.Models
+{
+    public class Category
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public List<News> News { get; set; } = new List<News>();
+    }
+}

@@ -1,0 +1,71 @@
+﻿@model NewsSite.Models.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "إنشاء حساب";
+}
+
+<div class="card auth-card">
+    <div class="card-body">
+        <h4 class="mb-3 text-center">انشئ حسابك</h4>
+        <p class="text-center meta-small">تسجيل سريع وسهل لبدء قراءة ونشر الأخبار</p>
+
+        <form asp-action="Register" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="All" class="text-danger mb-2"></div>
+
+            <div class="mb-3">
+                <label asp-for="FullName" class="form-label"></label>
+                <input asp-for="FullName" class="form-control" />
+                <div class="invalid-feedback" asp-validation-for="FullName"></div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <div class="invalid-feedback" asp-validation-for="Email"></div>
+            </div>
+
+            <div class="mb-3 position-relative">
+                <label asp-for="Password" class="form-label"></label>
+                <div class="input-group">
+                    <input asp-for="Password" class="form-control" id="password" />
+                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">اظهر</button>
+                </div>
+                <div class="invalid-feedback" asp-validation-for="Password"></div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ConfirmPassword" class="form-label"></label>
+                <input asp-for="ConfirmPassword" class="form-control" />
+                <div class="invalid-feedback" asp-validation-for="ConfirmPassword"></div>
+            </div>
+
+            <div class="d-grid mb-2">
+                <button type="submit" class="btn btn-accent">إنشاء الحساب</button>
+            </div>
+
+            <div class="text-center mb-2">أو سجل بواسطة</div>
+            <div class="d-flex gap-2 justify-content-center mb-3">
+                <button type="button" class="btn btn-outline-primary">Google</button>
+                <button type="button" class="btn btn-outline-info">Twitter</button>
+            </div>
+
+            <div class="text-center">
+                لديك حساب؟ <a asp-action="Login">تسجيل الدخول</a>
+            </div>
+        </form>
+    </div>
+    </div>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        document.getElementById('togglePassword')?.addEventListener('click', function(){
+            var pwd = document.getElementById('password');
+            if(!pwd) return;
+            if(pwd.type === 'password') { pwd.type = 'text'; this.textContent = 'اخفِ'; }
+            else { pwd.type = 'password'; this.textContent = 'اظهر'; }
+        });
+    </script>
+}

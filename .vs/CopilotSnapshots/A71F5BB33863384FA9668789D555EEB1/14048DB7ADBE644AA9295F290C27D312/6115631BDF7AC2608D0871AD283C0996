@@ -1,0 +1,27 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using NewsSite.Services;
+using NewsSite.Models;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+
+public class HomeController : Controller
+{
+    private readonly INewsService _newsService;
+
+    public HomeController(INewsService newsService)
+    {
+        _newsService = newsService;
+    }
+
+    public async Task<IActionResult> Index()
+    {
+        // Get latest news to show on home page
+        var news = await _newsService.GetAllNewsAsync();
+        return View(news);
+    }
+
+    public IActionResult Error()
+    {
+        return View();
+    }
+}

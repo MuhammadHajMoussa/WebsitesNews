@@ -1,0 +1,567 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\models\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:models\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\controllers\\newsfilescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:controllers\\newsfilescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\controllers\\newscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:controllers\\newscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\services\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:services\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\services\\inewsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:services\\inewsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\views\\news\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:views\\news\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\views\\newsfiles\\videos.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:views\\newsfiles\\videos.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\views\\news\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:views\\news\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\models\\viewmodels\\newsviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:models\\viewmodels\\newsviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\models\\news.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:models\\news.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\views\\newsfiles\\documents.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:views\\newsfiles\\documents.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\views\\newsfiles\\images.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:views\\newsfiles\\images.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\services\\newsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:services\\newsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\views\\news\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:views\\news\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\models\\errorviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:models\\errorviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\models\\comment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:models\\comment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\models\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:models\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\models\\viewmodels\\usermanagementviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:models\\viewmodels\\usermanagementviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\models\\viewmodels\\promoteviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:models\\viewmodels\\promoteviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\views\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:views\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\views\\shared\\_loginpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:views\\shared\\_loginpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\views\\shared\\_validationscriptspartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:views\\shared\\_validationscriptspartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\areas\\identity\\pages\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:areas\\identity\\pages\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\views\\account\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:views\\account\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\views\\account\\accessdenied.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:views\\account\\accessdenied.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|c:\\users\\mhmad\\desktop\\fbi11\\newssite\\newssite\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{218E81F3-EFE0-447B-807C-6522CD46039E}|NewsSite.csproj|solutionrelative:views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AccountController.cs",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "Controllers\\AccountController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEIAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-01T16:16:03.403Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Program.cs*",
+              "RelativeToolTip": "Program.cs*",
+              "ViewState": "AgIAAEsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-01T00:53:28.947Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "UsersController.cs",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Controllers\\UsersController.cs",
+              "RelativeDocumentMoniker": "Controllers\\UsersController.cs",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Controllers\\UsersController.cs",
+              "RelativeToolTip": "Controllers\\UsersController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-04T02:15:56.178Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "Controllers\\HomeController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-04T01:33:27.631Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "Data\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAUwEYAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-04T00:55:02.582Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Category.cs",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Models\\Category.cs",
+              "RelativeDocumentMoniker": "Models\\Category.cs",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Models\\Category.cs*",
+              "RelativeToolTip": "Models\\Category.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-04T01:35:10.3Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "NewsFilesController.cs",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Controllers\\NewsFilesController.cs",
+              "RelativeDocumentMoniker": "Controllers\\NewsFilesController.cs",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Controllers\\NewsFilesController.cs",
+              "RelativeToolTip": "Controllers\\NewsFilesController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAALsAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-04T01:03:13.707Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "NewsController.cs",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Controllers\\NewsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\NewsController.cs",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Controllers\\NewsController.cs",
+              "RelativeToolTip": "Controllers\\NewsController.cs",
+              "ViewState": "AgIAAGMCAAAAAAAAAAAAAIwCAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-04T01:00:12.912Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "IUserService.cs",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Services\\IUserService.cs",
+              "RelativeDocumentMoniker": "Services\\IUserService.cs",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Services\\IUserService.cs",
+              "RelativeToolTip": "Services\\IUserService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-05T00:23:20.766Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "INewsService.cs",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Services\\INewsService.cs",
+              "RelativeDocumentMoniker": "Services\\INewsService.cs",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Services\\INewsService.cs",
+              "RelativeToolTip": "Services\\INewsService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-01T17:39:31.671Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\News\\Edit.cshtml",
+              "RelativeDocumentMoniker": "Views\\News\\Edit.cshtml",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\News\\Edit.cshtml",
+              "RelativeToolTip": "Views\\News\\Edit.cshtml",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAswL4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-04T23:31:37.762Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Videos.cshtml",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\NewsFiles\\Videos.cshtml",
+              "RelativeDocumentMoniker": "Views\\NewsFiles\\Videos.cshtml",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\NewsFiles\\Videos.cshtml",
+              "RelativeToolTip": "Views\\NewsFiles\\Videos.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-04T13:57:33.011Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "News.cs",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Models\\News.cs",
+              "RelativeDocumentMoniker": "Models\\News.cs",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Models\\News.cs",
+              "RelativeToolTip": "Models\\News.cs",
+              "ViewState": "AgIAAHcAAAAAAAAAAAAiwJQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-04T00:24:29.037Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "NewsViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Models\\ViewModels\\NewsViewModel.cs",
+              "RelativeDocumentMoniker": "Models\\ViewModels\\NewsViewModel.cs",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Models\\ViewModels\\NewsViewModel.cs",
+              "RelativeToolTip": "Models\\ViewModels\\NewsViewModel.cs",
+              "ViewState": "AgIAAEgAAAAAAAAAAAAswF0AAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-04T01:06:12.279Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\News\\Create.cshtml",
+              "RelativeDocumentMoniker": "Views\\News\\Create.cshtml",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\News\\Create.cshtml",
+              "RelativeToolTip": "Views\\News\\Create.cshtml",
+              "ViewState": "AgIAAH8AAAAAAAAAAAAowDYBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-04T01:25:03.554Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAIwAAAAAAAAAAAAswM4AAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-01T14:52:52.453Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Images.cshtml",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\NewsFiles\\Images.cshtml",
+              "RelativeDocumentMoniker": "Views\\NewsFiles\\Images.cshtml",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\NewsFiles\\Images.cshtml",
+              "RelativeToolTip": "Views\\NewsFiles\\Images.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-04T13:50:08.694Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Documents.cshtml",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\NewsFiles\\Documents.cshtml",
+              "RelativeDocumentMoniker": "Views\\NewsFiles\\Documents.cshtml",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\NewsFiles\\Documents.cshtml",
+              "RelativeToolTip": "Views\\NewsFiles\\Documents.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-04T13:56:14.383Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "NewsService.cs",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Services\\NewsService.cs",
+              "RelativeDocumentMoniker": "Services\\NewsService.cs",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Services\\NewsService.cs",
+              "RelativeToolTip": "Services\\NewsService.cs",
+              "ViewState": "AgIAAMYAAAAAAAAAAAAAwNUAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-01T17:27:13.119Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\News\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\News\\Index.cshtml",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\News\\Index.cshtml",
+              "RelativeToolTip": "Views\\News\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADUAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-04T01:25:28.426Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "UserManagementViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Models\\ViewModels\\UserManagementViewModel.cs",
+              "RelativeDocumentMoniker": "Models\\ViewModels\\UserManagementViewModel.cs",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Models\\ViewModels\\UserManagementViewModel.cs",
+              "RelativeToolTip": "Models\\ViewModels\\UserManagementViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-04T01:34:42.783Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "ErrorViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Models\\ErrorViewModel.cs",
+              "RelativeDocumentMoniker": "Models\\ErrorViewModel.cs",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Models\\ErrorViewModel.cs",
+              "RelativeToolTip": "Models\\ErrorViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-01T18:58:33.432Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "Comment.cs",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Models\\Comment.cs",
+              "RelativeDocumentMoniker": "Models\\Comment.cs",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Models\\Comment.cs",
+              "RelativeToolTip": "Models\\Comment.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAuwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-04T01:35:15.613Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "PromoteViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Models\\ViewModels\\PromoteViewModel.cs",
+              "RelativeDocumentMoniker": "Models\\ViewModels\\PromoteViewModel.cs",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Models\\ViewModels\\PromoteViewModel.cs",
+              "RelativeToolTip": "Models\\ViewModels\\PromoteViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-04T01:34:37.681Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "ApplicationUser.cs",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Models\\ApplicationUser.cs",
+              "RelativeDocumentMoniker": "Models\\ApplicationUser.cs",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Models\\ApplicationUser.cs",
+              "RelativeToolTip": "Models\\ApplicationUser.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-01T18:58:36.852Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "_LoginPartial.cshtml",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\Shared\\_LoginPartial.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_LoginPartial.cshtml",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\Shared\\_LoginPartial.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_LoginPartial.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-01T14:52:28.67Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "_ValidationScriptsPartial.cshtml",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\Shared\\_ValidationScriptsPartial.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_ValidationScriptsPartial.cshtml",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\Shared\\_ValidationScriptsPartial.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_ValidationScriptsPartial.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-01T17:42:30.608Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "_ViewStart.cshtml",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\_ViewStart.cshtml",
+              "RelativeDocumentMoniker": "Views\\_ViewStart.cshtml",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\_ViewStart.cshtml",
+              "RelativeToolTip": "Views\\_ViewStart.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-01T14:52:20.842Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "_ViewStart.cshtml",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Areas\\Identity\\Pages\\_ViewStart.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Identity\\Pages\\_ViewStart.cshtml",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Areas\\Identity\\Pages\\_ViewStart.cshtml",
+              "RelativeToolTip": "Areas\\Identity\\Pages\\_ViewStart.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-01T15:26:10.673Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-01T15:25:53.566Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\Account\\Login.cshtml",
+              "RelativeDocumentMoniker": "Views\\Account\\Login.cshtml",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\Account\\Login.cshtml",
+              "RelativeToolTip": "Views\\Account\\Login.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-01T14:59:26.171Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "Register.cshtml",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\Account\\Register.cshtml",
+              "RelativeDocumentMoniker": "Views\\Account\\Register.cshtml",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\Account\\Register.cshtml",
+              "RelativeToolTip": "Views\\Account\\Register.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-01T14:59:29.436Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "AccessDenied.cshtml",
+              "DocumentMoniker": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\Account\\AccessDenied.cshtml",
+              "RelativeDocumentMoniker": "Views\\Account\\AccessDenied.cshtml",
+              "ToolTip": "C:\\Users\\mhmad\\Desktop\\FBI11\\NewsSite\\NewsSite\\Views\\Account\\AccessDenied.cshtml",
+              "RelativeToolTip": "Views\\Account\\AccessDenied.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-01T14:59:24.017Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+﻿:root{
+    --bs-primary: #0d6efd;
+    --brand-dark: #0b3d91;
+    --accent: #ff7a59;
+    --muted: #6c757d;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
+
+body {
+    font-family: 'Cairo', Tahoma, Arial, sans-serif;
+    background: #f8f9fa;
+    color: #222;
+}
+
+/* Layout container max width */
+.container {
+    max-width: 1200px;
+}
+
+/* Navbar customizations */
+.navbar-brand {
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+.navbar {
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+}
+
+/* Hero / featured styles */
+.hero-card img{
+    height: 360px;
+    object-fit: cover;
+}
+.card .card-img-top{
+    height: 180px;
+    object-fit: cover;
+}
+
+/* News card */
+.card h5 {
+    font-weight: 600;
+}
+.card p {
+    color: var(--muted);
+}
+
+/* Accent buttons */
+.btn-accent{
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+}
+.btn-accent:hover{
+    background:#ff6a3f;
+    border-color:#ff6a3f;
+}
+
+/* Form cards for login/register */
+.auth-card{
+    max-width: 420px;
+    margin: 40px auto;
+    box-shadow: 0 8px 24px rgba(15,23,42,0.08);
+    border-radius: 12px;
+}
+.auth-card .card-body{padding:30px}
+
+.footer {
+    padding: 24px 0;
+    background: #fff;
+}
+
+/* Comments */
+.comment-card{
+    border-left: 4px solid var(--bs-primary);
+}
+
+/* RTL table alignment */
+.table th, .table td {
+    text-align: right;
+}
+
+/* small utilities */
+.meta-small{color:var(--muted);font-size:0.9rem}
+

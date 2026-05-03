@@ -1,0 +1,74 @@
+﻿@model NewsSite.Models.News
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="card mb-4">
+    <img src="~/images/placeholder-hero.jpg" class="card-img-top" alt="@Model.Title" />
+    <div class="card-body">
+        <h1 class="card-title">@Model.Title</h1>
+        <div class="d-flex justify-content-between meta-small mb-2">
+            <div>بواسطة <strong>@Model.Author.FullName</strong></div>
+            <div>@Model.PublishDate.ToString("dd MMM yyyy") • @Model.Category.Name</div>
+        </div>
+        <p class="lead">@Model.Content</p>
+
+        <div class="d-flex gap-2">
+            <form asp-action="Like" asp-route-id="@Model.Id" method="post">
+                <button type="submit" class="btn btn-outline-primary">إعجاب (@Model.Likes)</button>
+            </form>
+            <span class="meta-small align-self-center">المشاهدات: @Model.Views</span>
+        </div>
+    </div>
+</div>
+
+<!-- Media gallery -->
+@if (Model.Images.Any())
+{
+    <div class="row mb-4">
+        @foreach (var img in Model.Images.Take(4))
+        {
+            <div class="col-6 col-md-3 mb-3">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal@img.Id">
+                    <img src="@(Url.Action("GetFile","NewsFiles", new { id = img.Id, type = "image" }))" class="img-fluid rounded" alt="@img.Title" />
+                </a>
+                <div class="modal fade" id="imageModal@img.Id" tabindex="-1">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-body p-0">
+                                <img src="@(Url.Action("GetFile","NewsFiles", new { id = img.Id, type = "image" }))" class="img-fluid w-100" alt="@img.Title" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<h4 class="mb-3">التعليقات (@Model.Comments.Count)</h4>
+@foreach (var comment in Model.Comments.OrderByDescending(c => c.PostedDate))
+{
+    <div class="card mb-2 comment-card p-2">
+        <div class="card-body">
+            <div class="d-flex justify-content-between">
+                <div><strong>@comment.User.FullName</strong></div>
+                <div class="meta-small">@comment.PostedDate.ToString("dd MMM yyyy")</div>
+            </div>
+            <p class="mb-0">@comment.Content</p>
+        </div>
+    </div>
+}
+
+<div class="card mt-3">
+    <div class="card-body">
+        <h5>أضف تعليق</h5>
+        <form asp-action="AddComment" asp-route-newsId="@Model.Id" method="post">
+            <div class="mb-3">
+                <textarea name="content" rows="4" class="form-control" placeholder="اكتب تعليقك هنا..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">إرسال</button>
+        </form>
+    </div>
+</div>

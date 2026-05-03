@@ -1,0 +1,18 @@
+﻿@model IEnumerable<NewsSite.Models.Document>
+
+<h2>المستندات @(ViewBag.NewsId != null ? "للخبر رقم " + ViewBag.NewsId : "")</h2>
+
+<div class="row">
+    @foreach (var document in Model)
+    {
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@document.Title (ID: @document.Id)</h5>
+                    <a href="@Url.Action("GetFile", "NewsFiles", new { id = document.Id, type = "document" })" target="_blank" class="btn btn-primary">تحميل المستند</a>
+                    <p class="card-text">تاريخ الرفع: @document.UploadDate.ToString("dd/MM/yyyy")</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>

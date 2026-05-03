@@ -1,0 +1,174 @@
+﻿
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using NewsSite.Data;
+using NewsSite.Models;
+using NewsSite.Services;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Configure Kestrel for larger file uploads
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Limits.MaxRequestBodySize = 52428800; // 50 MB
+});
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages(); // لدعم الواجهات الافتراضية إذا لزم الأمر
+builder.Services.AddSession(); // إذا كنت تستخدم Session (اختياري)
+
+// Configure form options for file uploads
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.ValueLengthLimit = int.MaxValue;
+    options.MultipartBodyLengthLimit = 52428800; // 50 MB
+    options.MultipartHeadersLengthLimit = int.MaxValue;
+});
+
+// Configure DbContext
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Configure Identity
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+
+// Register Services
+builder.Services.AddScoped<INewsService, NewsService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+var app = builder.Build();
+
+// Add security headers middleware
+app.Use(async (context, next) =>
+{
+    context.Response.Headers["X-Content-Type-Options"] = "nosniff";
+    context.Response.Headers["X-Frame-Options"] = "DENY";
+    context.Response.Headers["Referrer-Policy"] = "no-referrer-when-downgrade";
+    context.Response.Headers["Permissions-Policy"] = "geolocation=(), microphone=()";
+    // Basic Content-Security-Policy (adjust per your needs)
+    context.Response.Headers["Content-Security-Policy"] = "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data:;";
+    await next();
+});
+
+// Seed data
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+
+        if (context == null) throw new ArgumentNullException(nameof(context));
+        if (roleManager == null) throw new ArgumentNullException(nameof(roleManager));
+        if (userManager == null) throw new ArgumentNullException(nameof(userManager));
+
+        string[] roles = { "Subscriber", "Author", "Admin", "Owner" };
+        foreach (var role in roles)
+        {
+            if (!await roleManager.RoleExistsAsync(role))
+            {
+                await roleManager.CreateAsync(new IdentityRole(role));
+            }
+        }
+
+        var adminEmail = "admin@example.com";
+        var admin = await userManager.FindByEmailAsync(adminEmail);
+        if (admin == null)
+        {
+            admin = new ApplicationUser { UserName = adminEmail, Email = adminEmail, EmailConfirmed = true, FullName = "Administrator" };
+            var result = await userManager.CreateAsync(admin, "Password123!");
+            if (result.Succeeded)
+            {
+                // assign Owner role to the seeded main account
+                await userManager.AddToRoleAsync(admin, "Owner");
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"خطأ في تهيئة البيانات: {ex.Message}");
+    }
+}
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+// Redirect legacy NewsFiles routes to friendly routes (301 permanent)
+app.Use(async (context, next) =>
+{
+    var path = context.Request.Path.Value ?? string.Empty;
+    var lower = path.ToLowerInvariant();
+
+    if (lower.StartsWith("/newsfiles/images"))
+    {
+        var newsId = context.Request.Query["newsId"].ToString();
+        var target = "/images" + (string.IsNullOrEmpty(newsId) ? string.Empty : "/" + newsId);
+        context.Response.Redirect(target, permanent: true);
+        return;
+    }
+
+    if (lower.StartsWith("/newsfiles/videos"))
+    {
+        var newsId = context.Request.Query["newsId"].ToString();
+        var target = "/videos" + (string.IsNullOrEmpty(newsId) ? string.Empty : "/" + newsId);
+        context.Response.Redirect(target, permanent: true);
+        return;
+    }
+
+    if (lower.StartsWith("/newsfiles/documents"))
+    {
+        var newsId = context.Request.Query["newsId"].ToString();
+        var target = "/documents" + (string.IsNullOrEmpty(newsId) ? string.Empty : "/" + newsId);
+        context.Response.Redirect(target, permanent: true);
+        return;
+    }
+
+    await next();
+});
+app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseSession(); // إذا كنت تستخدم Session
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+// Friendly routes for media to hide controller/action names in URL
+app.MapControllerRoute(
+    name: "images",
+    pattern: "images/{newsId?}",
+    defaults: new { controller = "NewsFiles", action = "Images" });
+
+app.MapControllerRoute(
+    name: "videos",
+    pattern: "videos/{newsId?}",
+    defaults: new { controller = "NewsFiles", action = "Videos" });
+
+app.MapControllerRoute(
+    name: "documents",
+    pattern: "documents/{newsId?}",
+    defaults: new { controller = "NewsFiles", action = "Documents" });
+
+// Friendly category route that hides controller/action names and uses token path
+app.MapControllerRoute(
+    name: "category",
+    pattern: "c/{token}",
+    defaults: new { controller = "News", action = "Index" });
+
+// Ensure Razor Pages (Identity) are mapped
+app.MapRazorPages();
+
+app.Run();
+//  

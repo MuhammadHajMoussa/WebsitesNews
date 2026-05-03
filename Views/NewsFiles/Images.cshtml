@@ -1,0 +1,18 @@
+﻿@model IEnumerable<NewsSite.Models.Image>
+
+<h2>الصور @(ViewBag.NewsId != null ? "للخبر رقم " + ViewBag.NewsId : "")</h2>
+
+<div class="row">
+    @foreach (var image in Model)
+    {
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@image.Title (ID: @image.Id)</h5>
+                    <img src="@Url.Action("GetFile", "NewsFiles", new { id = image.Id, type = "image" })" class="img-fluid" alt="@image.Title">
+                    <p class="card-text">تاريخ الرفع: @image.UploadDate.ToString("dd/MM/yyyy")</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>

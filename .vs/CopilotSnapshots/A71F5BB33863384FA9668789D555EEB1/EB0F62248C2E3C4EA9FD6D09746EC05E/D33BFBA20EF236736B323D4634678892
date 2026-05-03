@@ -1,0 +1,15 @@
+﻿body {
+    font-family: Arial, sans-serif;
+}
+
+.table th, .table td {
+    text-align: right;
+}
+
+.navbar-brand, .nav-link, .btn {
+    font-size: 1.1rem;
+}
+
+.container {
+    max-width: 1200px;
+}

@@ -1,0 +1,102 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using NewsSite.Models.ViewModels;
+using NewsSite.Services;
+using System.Linq;
+using System.Threading.Tasks;
+
+[Authorize(Roles = "Admin,Owner")]
+public class UsersController : Controller
+{
+    private readonly IUserService _userService;
+
+    public UsersController(IUserService userService)
+    {
+        _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+    }
+
+    public async Task<IActionResult> Index()
+    {
+        var users = await _userService.GetAllUsersAsync() ?? new List<ApplicationUser>();
+        var model = users.Select(u => new UserManagementViewModel
+        {
+            Id = u.Id,
+            UserName = u.UserName,
+            Email = u.Email,
+            Roles = _userService.GetUserRolesAsync(u.Id).Result // تأكد من وجود هذه الدالة في IUserService
+        }).ToList();
+        return View(model);
+    }
+
+    [HttpGet]
+    public IActionResult Promote(string userId)
+    {
+        if (string.IsNullOrEmpty(userId))
+        {
+            return BadRequest("معرف المستخدم غير صالح.");
+        }
+
+        var model = new PromoteViewModel
+        {
+            UserId = userId,
+            Roles = new[] { "Subscriber", "Author", "Admin", "Owner" }
+        };
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Promote(string userId, string newRole)
+    {
+        if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(newRole))
+        {
+            ModelState.AddModelError("", "معرف المستخدم أو الدور غير صالح.");
+            ViewBag.Roles = new[] { "Subscriber", "Author", "Admin", "Owner" };
+            ViewBag.UserId = userId;
+            return View();
+        }
+
+        try
+        {
+            await _userService.PromoteUserAsync(userId, newRole);
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError("", $"فشل في ترقية المستخدم: {ex.Message}");
+            ViewBag.Roles = new[] { "Subscriber", "Author", "Admin", "Owner" };
+            ViewBag.UserId = userId;
+            return View();
+        }
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Delete(string userId)
+    {
+        if (string.IsNullOrEmpty(userId))
+        {
+            return BadRequest("معرف المستخدم غير صالح.");
+        }
+
+        try
+        {
+            await _userService.DeleteUserAsync(userId);
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError("", $"فشل في حذف المستخدم: {ex.Message}");
+            var users = await _userService.GetAllUsersAsync() ?? new List<ApplicationUser>();
+            var model = users.Select(u => new UserManagementViewModel
+            {
+                Id = u.Id,
+                UserName = u.UserName,
+                Email = u.Email,
+                Roles = _userService.GetUserRolesAsync(u.Id).Result // تأكد من وجود هذه الدالة
+            }).ToList();
+            return View("Index", model);
+        }
+    }
+    
+}

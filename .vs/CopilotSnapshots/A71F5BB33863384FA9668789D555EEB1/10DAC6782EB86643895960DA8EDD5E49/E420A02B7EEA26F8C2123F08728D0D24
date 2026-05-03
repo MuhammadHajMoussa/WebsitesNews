@@ -1,0 +1,54 @@
+﻿@model IEnumerable<NewsSite.Models.News>
+
+@{
+    ViewData["Title"] = "الأخبار";
+}
+
+<h1>الأخبار</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">إضافة خبر جديد</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>العنوان</th>
+            <th>التصنيف</th>
+            <th>المشاهدات</th>
+            <th>الإعجابات</th>
+            <th>الكاتب</th>
+            <th>التاريخ</th>
+            <th>الملفات</th>
+            <th>إجراءات</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">@item.Title</a>
+                </td>
+                <td>@item.Category.Name</td>
+                <td>@item.Views</td>
+                <td>@item.Likes</td>
+                <td>@item.Author.FullName</td>
+                <td>@item.PublishDate.ToShortDateString()</td>
+                <td>
+                    <div>
+                        <a asp-controller="NewsFiles" asp-action="Videos" asp-route-newsId="@item.Id">فيديوهات (@item.Videos.Count)</a> |
+                        <a asp-controller="NewsFiles" asp-action="Images" asp-route-newsId="@item.Id">صور (@item.Images.Count)</a> |
+                        <a asp-controller="NewsFiles" asp-action="Documents" asp-route-newsId="@item.Id">مستندات (@item.Documents.Count)</a>
+                    </div>
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">تعديل</a> |
+                    <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;" onsubmit="return confirm('هل أنت متأكد من حذف هذا الخبر؟');">
+                        <button type="submit" class="btn btn-sm btn-danger">حذف</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

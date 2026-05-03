@@ -1,0 +1,103 @@
+﻿:root{
+    --bs-primary: #0d6efd; /* bootstrap default */
+    --brand-dark: #0b3d91;
+    --accent: #20c997; /* teal/green popular accent */
+    --muted: #6c757d;
+    --card-bg: #ffffff;
+    /* Light red background for the whole application */
+    --page-bg: #fff0f0; /* very light red/pink */
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
+
+body {
+    font-family: 'Cairo', Tahoma, Arial, sans-serif;
+    background: var(--page-bg);
+    color: #222;
+}
+
+/* Layout container max width */
+.container {
+    max-width: 1200px;
+}
+
+/* Navbar customizations */
+.navbar-brand {
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+.navbar {
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+}
+
+/* Hero / featured styles */
+.hero-card img{
+    height: 380px;
+    object-fit: cover;
+    filter: saturate(1.02) contrast(0.98);
+}
+.card .card-img-top{
+    height: 170px;
+    object-fit: cover;
+}
+
+/* News card */
+.card h5 {
+    font-weight: 600;
+    color: var(--brand-dark);
+}
+.card p {
+    color: var(--muted);
+}
+
+/* Accent buttons */
+.btn-accent{
+    background: linear-gradient(90deg, var(--accent), #17c28a);
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(32,201,151,0.18);
+}
+.btn-accent:hover{
+    filter: brightness(0.95);
+}
+
+/* Form cards for login/register */
+.auth-card{
+    max-width: 420px;
+    margin: 40px auto;
+    box-shadow: 0 12px 30px rgba(15,23,42,0.08);
+    border-radius: 12px;
+    background: var(--card-bg);
+}
+.auth-card .card-body{padding:28px}
+
+.footer {
+    padding: 24px 0;
+    background: var(--card-bg);
+}
+
+/* Comments */
+.comment-card{
+    border-left: 4px solid var(--bs-primary);
+    background: linear-gradient(180deg, rgba(13,110,253,0.02), transparent);
+}
+
+/* RTL table alignment */
+.table th, .table td {
+    text-align: right;
+}
+
+/* small utilities */
+.meta-small{color:var(--muted);font-size:0.9rem}
+
+/* Links */
+a { color: var(--bs-primary); }
+a:hover { color: var(--brand-dark); text-decoration: none; }
+
+/* Cards appearance */
+.card { border: none; border-radius: 12px; }
+.card .card-body { background: var(--card-bg); }
+
+/* Active list-group item */
+.list-group-item.active { background: var(--bs-primary); border-color: var(--bs-primary); color: #fff; }
+

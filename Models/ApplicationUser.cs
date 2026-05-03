@@ -1,0 +1,11 @@
+using Microsoft.AspNetCore.Identity;
+
+public class ApplicationUser : IdentityUser
+{
+    public string? FullName { get; set; }
+
+    /// <summary>
+    /// مسار الصورة الشخصية النسبي (مثل: /uploads/avatars/userid.jpg)
+    /// </summary>
+    public string? AvatarPath { get; set; }
+}

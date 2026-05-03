@@ -1,0 +1,268 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using NewsSite.Models;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+using System;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+
+namespace NewsSite.Pages.Profile
+{
+    [Authorize]
+    public class IndexModel : PageModel
+{
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IWebHostEnvironment _env;
+
+    public IndexModel(UserManager<ApplicationUser> userManager, IWebHostEnvironment env)
+    {
+        _userManager = userManager;
+        _env = env;
+    }
+
+    // Readonly identifiers
+    public string Id { get; set; }
+
+    [BindProperty]
+    [Required(ErrorMessage = "الاسم الكامل مطلوب")]
+    public string FullName { get; set; }
+
+    [BindProperty]
+    [Required(ErrorMessage = "اسم المستخدم مطلوب")]
+    public string UserName { get; set; }
+
+    [BindProperty]
+    [Required(ErrorMessage = "البريد الإلكتروني مطلوب")]
+    [EmailAddress(ErrorMessage = "صيغة البريد غير صحيحة")]
+    public string Email { get; set; }
+
+    [BindProperty]
+    public bool EmailConfirmed { get; set; }
+
+    // Password change fields
+    [BindProperty]
+    [DataType(DataType.Password)]
+    public string CurrentPassword { get; set; }
+
+    [BindProperty]
+    [DataType(DataType.Password)]
+    public string NewPassword { get; set; }
+
+    [BindProperty]
+    [DataType(DataType.Password)]
+    [Compare("NewPassword", ErrorMessage = "كلمة المرور غير متطابقة")]
+    public string ConfirmPassword { get; set; }
+
+    [BindProperty]
+    public string PhoneNumber { get; set; }
+
+    [BindProperty]
+    public bool PhoneNumberConfirmed { get; set; }
+
+    [BindProperty]
+    public bool TwoFactorEnabled { get; set; }
+
+    [BindProperty]
+    public DateTimeOffset? LockoutEnd { get; set; }
+
+    [BindProperty]
+    public bool LockoutEnabled { get; set; }
+
+    [BindProperty]
+    public int AccessFailedCount { get; set; }
+
+    public string[] Roles { get; set; } = new string[0];
+
+    [TempData]
+    public string StatusMessage { get; set; }
+
+    // Avatar upload
+    [BindProperty]
+    public IFormFile AvatarImage { get; set; }
+
+    public string AvatarUrl { get; set; }
+
+    private string GetAvatarDirectory() => Path.Combine(_env.WebRootPath ?? string.Empty, "uploads", "avatars");
+
+    private string FindAvatarUrlForUser(string userId)
+    {
+        try
+        {
+            var dir = GetAvatarDirectory();
+            if (!Directory.Exists(dir)) return null;
+            var files = Directory.GetFiles(dir, userId + ".*");
+            if (files.Length == 0) return null;
+            var file = Path.GetFileName(files[0]);
+            return "/uploads/avatars/" + file;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    public async Task<IActionResult> OnGetAsync()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null) return Challenge();
+
+        Id = user.Id;
+        FullName = user.FullName;
+        Email = user.Email;
+        UserName = user.UserName;
+        EmailConfirmed = user.EmailConfirmed;
+        PhoneNumber = user.PhoneNumber;
+        PhoneNumberConfirmed = user.PhoneNumberConfirmed;
+        TwoFactorEnabled = user.TwoFactorEnabled;
+        LockoutEnd = user.LockoutEnd;
+        LockoutEnabled = user.LockoutEnabled;
+        AccessFailedCount = user.AccessFailedCount;
+        Roles = (await _userManager.GetRolesAsync(user)).ToArray();
+
+        AvatarUrl = !string.IsNullOrEmpty(user.AvatarPath) ? user.AvatarPath : "/images/default-avatar.png";
+
+        return Page();
+    }
+
+    public async Task<IActionResult> OnPostAsync()
+    {
+        if (!ModelState.IsValid)
+        {
+            return Page();
+        }
+
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null) return Challenge();
+
+        Id = user.Id; // ensure id is set for redisplay
+
+        // Update username
+        if (user.UserName != UserName)
+        {
+            var setUserNameResult = await _userManager.SetUserNameAsync(user, UserName);
+            if (!setUserNameResult.Succeeded)
+            {
+                foreach (var e in setUserNameResult.Errors)
+                    ModelState.AddModelError(string.Empty, e.Description);
+                return Page();
+            }
+        }
+
+        // Update email
+        if (user.Email != Email)
+        {
+            var setEmailResult = await _userManager.SetEmailAsync(user, Email);
+            if (!setEmailResult.Succeeded)
+            {
+                foreach (var e in setEmailResult.Errors)
+                    ModelState.AddModelError(string.Empty, e.Description);
+                return Page();
+            }
+        }
+
+        // Update basic fields
+        user.FullName = FullName;
+        user.EmailConfirmed = EmailConfirmed;
+        user.PhoneNumber = PhoneNumber;
+        user.PhoneNumberConfirmed = PhoneNumberConfirmed;
+        user.TwoFactorEnabled = TwoFactorEnabled;
+        user.LockoutEnd = LockoutEnd;
+        user.LockoutEnabled = LockoutEnabled;
+        user.AccessFailedCount = AccessFailedCount;
+
+        // Handle avatar upload
+        if (AvatarImage != null && AvatarImage.Length > 0)
+        {
+            try
+            {
+                const long maxFileSize = 5242880; // 5 MB
+                if (AvatarImage.Length > maxFileSize)
+                {
+                    ModelState.AddModelError(string.Empty, "حجم الصورة كبير جداً. الحد الأقصى 5 MB.");
+                    Roles = (await _userManager.GetRolesAsync(user)).ToArray();
+                    AvatarUrl = !string.IsNullOrEmpty(user.AvatarPath) ? user.AvatarPath : "/images/default-avatar.png";
+                    return Page();
+                }
+
+                var allowed = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                var ext = Path.GetExtension(AvatarImage.FileName).ToLowerInvariant();
+                if (!allowed.Contains(ext))
+                {
+                    ModelState.AddModelError(string.Empty, "الملف غير مسموح. استخدم jpg, png, gif.");
+                    Roles = (await _userManager.GetRolesAsync(user)).ToArray();
+                    AvatarUrl = !string.IsNullOrEmpty(user.AvatarPath) ? user.AvatarPath : "/images/default-avatar.png";
+                    return Page();
+                }
+
+                var dir = GetAvatarDirectory();
+                Directory.CreateDirectory(dir);
+                var fileName = user.Id + ext;
+                var filePath = Path.Combine(dir, fileName);
+
+                // Remove previous avatars for this user
+                foreach (var f in Directory.GetFiles(dir, user.Id + ".*"))
+                {
+                    try { System.IO.File.Delete(f); } catch { }
+                }
+
+                // Save to file system
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await AvatarImage.CopyToAsync(stream);
+                }
+
+                // Update the database with the avatar path
+                var avatarPath = "/uploads/avatars/" + fileName;
+                user.AvatarPath = avatarPath;
+                AvatarUrl = avatarPath;
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, $"خطأ في رفع الصورة: {ex.Message}");
+                Roles = (await _userManager.GetRolesAsync(user)).ToArray();
+                AvatarUrl = !string.IsNullOrEmpty(user.AvatarPath) ? user.AvatarPath : "/images/default-avatar.png";
+                return Page();
+            }
+        }
+        else
+        {
+            AvatarUrl = !string.IsNullOrEmpty(user.AvatarPath) ? user.AvatarPath : "/images/default-avatar.png";
+        }
+
+        // Update user in database with all changes
+        var updateResult = await _userManager.UpdateAsync(user);
+        if (!updateResult.Succeeded)
+        {
+            foreach (var e in updateResult.Errors)
+                ModelState.AddModelError(string.Empty, e.Description);
+            return Page();
+        }
+
+        // Handle password change if requested
+        if (!string.IsNullOrEmpty(NewPassword))
+        {
+            if (string.IsNullOrEmpty(CurrentPassword))
+            {
+                ModelState.AddModelError(string.Empty, "لتغيير كلمة المرور، أدخل كلمة المرور الحالية.");
+                return Page();
+            }
+
+            var changePassResult = await _userManager.ChangePasswordAsync(user, CurrentPassword, NewPassword);
+            if (!changePassResult.Succeeded)
+            {
+                foreach (var e in changePassResult.Errors)
+                    ModelState.AddModelError(string.Empty, e.Description);
+                return Page();
+            }
+        }
+
+        StatusMessage = "تم تحديث الملف الشخصي بنجاح.";
+        return RedirectToPage();
+    }
+    }
+}

@@ -1,0 +1,53 @@
+﻿
+@model IEnumerable<NewsSite.Models.Video>
+
+@{
+    ViewData["Title"] = "الفيديوهات" + (ViewBag.NewsId != null ? " للخبر رقم " + ViewBag.NewsId : "");
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>الفيديوهات @(ViewBag.NewsId != null ? "للخبر رقم " + ViewBag.NewsId : "")</h2>
+
+<div class="row">
+    @foreach (var video in Model)
+    {
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@video.Title (ID: @video.Id)</h5>
+                    <video width="100%" controls preload="metadata" class="video-player">
+                        <source src="@Url.Action("GetFile", "NewsFiles", new { id = video.Id, type = "video" })" type="@video.FileType">
+                        @if (video.FileType != "video/mp4")
+                        {
+                            <source src="@Url.Action("GetFile", "NewsFiles", new { id = video.Id, type = "video" })" type="video/mp4">
+                            <source src="@Url.Action("GetFile", "NewsFiles", new { id = video.Id, type = "video" })" type="video/webm">
+                        }
+                        المتصفح لا يدعم تشغيل الفيديو. يرجى تنزيل
+                        <a href="@Url.Action("GetFile", "NewsFiles", new { id = video.Id, type = "video" })">الفيديو</a>.
+                    </video>
+                    <p class="card-text">تاريخ الرفع: @video.UploadDate.ToString("dd/MM/yyyy")</p>
+                    <p class="card-text">نوع الملف: @video.FileType</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Styles {
+    <style>
+        .video-player {
+            max-height: 300px;
+            object-fit: contain;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.video-player').forEach(video => {
+            video.addEventListener('error', () => {
+                console.error('خطأ في تحميل الفيديو:', video.error);
+            });
+        });
+    </script>
+}
