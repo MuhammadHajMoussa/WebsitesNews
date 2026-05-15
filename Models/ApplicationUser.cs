@@ -5,7 +5,7 @@ public class ApplicationUser : IdentityUser
     public string? FullName { get; set; }
 
     /// <summary>
-    /// مسار الصورة الشخصية النسبي (مثل: /uploads/avatars/userid.jpg)
+    /// الصورة الشخصية مخزنة كبيانات ثنائية (Byte Array) في قاعدة البيانات
     /// </summary>
     public byte[]? ProfilePicture { get; set; }
 }

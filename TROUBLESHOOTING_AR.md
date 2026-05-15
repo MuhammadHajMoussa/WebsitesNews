@@ -35,7 +35,7 @@ user.FullName = FullName;
 await _userManager.UpdateAsync(user);
 ```
 
-**الملف المتعلق**: `Pages/Profile/Index.cshtml.cs`
+**الملف المتعلق**: `Controllers/ProfileController.cs`
 
 ---
 
@@ -45,19 +45,19 @@ await _userManager.UpdateAsync(user);
 
 **الحل**:
 ```csharp
-// ❌ خطأ
-public async Task<IActionResult> OnGetAsync()
+// ❌ خطأ - Controller
+public async Task<IActionResult> Index()
 {
     // لم نجلب Biography!
-    return Page();
+    return View(new ProfileViewModel());
 }
 
 // ✅ صحيح
-public async Task<IActionResult> OnGetAsync()
+public async Task<IActionResult> Index()
 {
     var user = await _userManager.GetUserAsync(User);
-    Biography = user.Biography; // ← إضافة هذا
-    return Page();
+    var model = new ProfileViewModel { Biography = user.Biography }; // ← إضافة هذا
+    return View(model);
 }
 ```
 
@@ -179,18 +179,15 @@ builder.Services.Configure<FormOptions>(options =>
 
 ### ❌ مشكلة 9: الصورة لا تُحفظ
 
-**السبب**: المجلد غير موجود أو صلاحيات غير كافية
+**السبب**: خطأ أثناء قراءة الـ Stream وتحويله إلى Byte Array
 
 **الحل**:
 ```csharp
-// ✅ صحيح - تحقق من وجود المجلد وأنشئه
-var dir = GetAvatarDirectory();
-Directory.CreateDirectory(dir); // ← أنشئ المجلد إن لم يكن موجوداً
-
-var filePath = Path.Combine(dir, fileName);
-using (var stream = new FileStream(filePath, FileMode.Create))
+// ✅ صحيح - استخدم MemoryStream للتخزين في قاعدة البيانات
+using (var memoryStream = new MemoryStream())
 {
-    await AvatarImage.CopyToAsync(stream);
+    await model.AvatarImage.CopyToAsync(memoryStream);
+    user.ProfilePicture = memoryStream.ToArray(); // احفظ هنا
 }
 ```
 
@@ -455,4 +452,3 @@ if (user == null)
 - `DATA_FLOW_MAP_AR.md` - خريطة مسار البيانات
 - `CHECKLIST_ADD_NEW_FIELD_AR.md` - خطوات إضافة حقل جديد
 - `QUICK_REFERENCE_AR.md` - مرجع سريع
-

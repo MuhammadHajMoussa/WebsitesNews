@@ -1,7 +1,7 @@
 # توثيق نظام الصور الشخصية (Avatar System)
 
 ## نظرة عامة
-نظام شامل لإدارة صور الملفات الشخصية للمستخدمين يجمع بين حفظ الملفات في نظام الملفات وتخزين المسارات في قاعدة البيانات.
+تم تحديث نظام الصور الشخصية بالكامل بحيث لا يعتمد على نظام الملفات (`wwwroot`)، بل يتم تحويل الصورة إلى مصفوفة بايتات `byte[]` وتُخزّن مباشرة في قاعدة البيانات. يتم عرضها في الواجهة على شكل سلسلة نصية `Base64`.
 
 ---
 
@@ -16,16 +16,16 @@ public class ApplicationUser : IdentityUser
     public string FullName { get; set; }
     
     /// <summary>
-    /// مسار الصورة الشخصية النسبي (مثل: /uploads/avatars/userid.jpg)
+    /// الصورة الشخصية مخزنة كبيانات ثنائية (Byte Array)
     /// </summary>
-    public string AvatarPath { get; set; }  // ← عمود جديد في قاعدة البيانات
+    public byte[]? ProfilePicture { get; set; }
 }
 ```
 
 **العمود في قاعدة البيانات:**
 - **الجدول:** AspNetUsers
-- **العمود:** AvatarPath
-- **النوع:** nvarchar(max) قابل للتعديل
+- **العمود:** ProfilePicture
+- **النوع:** varbinary(max)
 
 ---
 
@@ -36,21 +36,21 @@ public class ApplicationUser : IdentityUser
 ```
 1. المستخدم يفتح صفحة /Profile
    ↓
-2. OnGetAsync() في Index.cshtml.cs
+2. Index() (GET) في ProfileController
    ↓
 3. جلب بيانات المستخدم من قاعدة البيانات
    └─ await _userManager.GetUserAsync(User)
    ↓
 4. قراءة حقل AvatarPath من البيانات
-   └─ user.AvatarPath (من الجدول AspNetUsers)
+   └─ user.ProfilePicture (من الجدول AspNetUsers)
    ↓
 5. عرض الصورة في الصفحة
    └─ <img src="@Model.AvatarUrl" />
 ```
 
 **الملفات المعنية:**
-- `Pages/Profile/Index.cshtml.cs` - OnGetAsync()
-- `Pages/Profile/Index.cshtml` - العرض
+- `Controllers/ProfileController.cs` - Index() (GET)
+- `Views/Profile/Index.cshtml` - العرض
 - `AspNetUsers` - جدول قاعدة البيانات
 
 ---
@@ -60,7 +60,7 @@ public class ApplicationUser : IdentityUser
 ```
 1. المستخدم يختار صورة ويضغط "حفظ"
    ↓
-2. OnPostAsync() يبدأ المعالجة
+2. Index() (POST) يبدأ المعالجة
    ↓
 3. التحقق من حجم الملف (الحد الأقصى 5 MB)
    ├─ إذا أكبر من 5 MB → رسالة خطأ
@@ -70,13 +70,11 @@ public class ApplicationUser : IdentityUser
    ├─ إذا غير مسموح → رسالة خطأ
    └─ إذا OK → تابع
    ↓
-5. حفظ الملف في نظام الملفات
-   └─ المسار: wwwroot/uploads/avatars/{userId}.{ext}
-   └─ مثال: wwwroot/uploads/avatars/abc123xyz.jpg
+5. تحويل الملف إلى بيانات ثنائية
+   └─ باستخدام MemoryStream وتحويله إلى byte[]
    ↓
-6. حفظ المسار النسبي في قاعدة البيانات
-   └─ user.AvatarPath = "/uploads/avatars/abc123xyz.jpg"
-   └─ UPDATE AspNetUsers SET AvatarPath = ... WHERE Id = ...
+6. تخزين الصورة في قاعدة البيانات
+   └─ user.ProfilePicture = memoryStream.ToArray()
    ↓
 7. تحديث بيانات المستخدم في قاعدة البيانات
    └─ await _userManager.UpdateAsync(user)
@@ -85,25 +83,14 @@ public class ApplicationUser : IdentityUser
 ```
 
 **الملفات المعنية:**
-- `Pages/Profile/Index.cshtml.cs` - OnPostAsync()
+- `Controllers/ProfileController.cs` - Index() (POST)
 - `AspNetUsers` - جدول قاعدة البيانات
-- `wwwroot/uploads/avatars/` - نظام الملفات
 
 ---
 
 ## التخزين
 
-### أ) نظام الملفات
-**المسار الفعلي:** `wwwroot/uploads/avatars/`
-
-**أمثلة:**
-```
-wwwroot/uploads/avatars/550e8400-e29b-41d4-a716-446655440000.jpg
-wwwroot/uploads/avatars/660f9511-f30c-42e5-b817-557766551111.png
-wwwroot/uploads/avatars/770g0622-g41d-53f6-c928-668877662222.gif
-```
-
-### ب) قاعدة البيانات
+### قاعدة البيانات (حيث يتم كل شيء)
 **الجدول:** AspNetUsers
 **الأعمدة المهمة:**
 
@@ -113,31 +100,30 @@ wwwroot/uploads/avatars/770g0622-g41d-53f6-c928-668877662222.gif
 | UserName | nvarchar(256) | اسم المستخدم |
 | Email | nvarchar(256) | البريد الإلكتروني |
 | FullName | nvarchar(max) | الاسم الكامل |
-| **AvatarPath** | nvarchar(max) | **مسار الصورة النسبي** ← جديد |
+| **ProfilePicture** | varbinary(max) | **بيانات الصورة الثنائية** |
 
 **مثال على بيانات حقيقية:**
 ```sql
-SELECT Id, UserName, FullName, AvatarPath 
+SELECT Id, UserName, FullName 
 FROM AspNetUsers
 WHERE Id = '550e8400-e29b-41d4-a716-446655440000';
 
 -- النتيجة:
 -- Id: 550e8400-e29b-41d4-a716-446655440000
 -- UserName: ahmad
--- FullName: أحمد محمد
--- AvatarPath: /uploads/avatars/550e8400-e29b-41d4-a716-446655440000.jpg
+-- (البيانات الثنائية يتم عرضها في التطبيق عبر Base64)
 ```
 
 ---
 
 ## المعالجة في الكود
 
-### في OnPostAsync() - الحفظ
+### في Controller (POST) - الحفظ
 ```csharp
 // 1. حفظ الملف في نظام الملفات
 using (var stream = new FileStream(filePath, FileMode.Create))
 {
-    await AvatarImage.CopyToAsync(stream);
+    await model.AvatarImage.CopyToAsync(stream);
 }
 
 // 2. تحديث مسار الصورة في البيانات
@@ -148,10 +134,10 @@ user.AvatarPath = avatarPath;  // ← تعيين المسار
 var updateResult = await _userManager.UpdateAsync(user);
 ```
 
-### في OnGetAsync() - الاسترجاع
+### في Controller (GET) - الاسترجاع
 ```csharp
 // جلب المسار من قاعدة البيانات
-AvatarUrl = !string.IsNullOrEmpty(user.AvatarPath) 
+model.AvatarUrl = !string.IsNullOrEmpty(user.AvatarPath) 
     ? user.AvatarPath 
     : "/images/default-avatar.png";
 ```
@@ -199,11 +185,11 @@ builder.Services.Configure<FormOptions>(options =>
 ### 1. **Models/ApplicationUser.cs**
 - تعريف خاصية AvatarPath
 
-### 2. **Pages/Profile/Index.cshtml.cs**
-- `OnGetAsync()` - جلب البيانات
-- `OnPostAsync()` - حفظ الصورة والبيانات
+### 2. **Controllers/ProfileController.cs**
+- `Index()` GET - جلب البيانات
+- `Index()` POST - حفظ الصورة والبيانات
 
-### 3. **Pages/Profile/Index.cshtml**
+### 3. **Views/Profile/Index.cshtml**
 - عرض الصورة
 - نموذج الرفع
 
@@ -256,7 +242,7 @@ builder.Services.Configure<FormOptions>(options =>
 ### إذا أردت تعديل حد الحجم الأقصى
 
 ```csharp
-// في Pages/Profile/Index.cshtml.cs
+// في Controllers/ProfileController.cs
 const long maxFileSize = 10485760; // 10 MB بدلاً من 5 MB
 ```
 
@@ -284,4 +270,3 @@ private string GetAvatarDirectory()
 - ✅ **الاسترجاع:** من قاعدة البيانات مباشرة
 - ✅ **الأمان:** معالجة الأخطاء والتحقق من الصيغ
 - ✅ **الأداء:** لا يوجد تأخير في البحث عن الملفات
-

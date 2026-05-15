@@ -15,6 +15,7 @@
 - PhoneNumber (رقم الهاتف)
 - EmailConfirmed (تأكيد البريد)
 - PhoneNumberConfirmed (تأكيد الهاتف)
+- ProfilePicture (الصورة الشخصية كـ Byte Array) - إضافة مخصصة
 - TwoFactorEnabled (التحقق الثنائي)
 - LockoutEnd (نهاية الحظر)
 - LockoutEnabled (تفعيل الحظر)
@@ -205,29 +206,31 @@ new Category { Id = 4, Name = "ترفيه", Slug = "entertainment" }
 
 #### **المرحلة 1️⃣: جلب البيانات من قاعدة البيانات**
 ```csharp
-// الملف: Pages/Profile/Index.cshtml.cs
-public async Task<IActionResult> OnGetAsync()
+// الملف: Controllers/ProfileController.cs
+public async Task<IActionResult> Index()
 {
     var user = await _userManager.GetUserAsync(User);
     // البحث في جدول AspNetUsers عن المستخدم الحالي
     
     if (user == null) return Challenge();
 
-    // نقل البيانات من قاعدة البيانات إلى خصائص النموذج
-    Id = user.Id;                          // من: AspNetUsers.Id
-    FullName = user.FullName;              // من: AspNetUsers.FullName
-    Email = user.Email;                    // من: AspNetUsers.Email
-    UserName = user.UserName;              // من: AspNetUsers.UserName
-    EmailConfirmed = user.EmailConfirmed;  // من: AspNetUsers.EmailConfirmed
-    PhoneNumber = user.PhoneNumber;        // من: AspNetUsers.PhoneNumber
+    // نقل البيانات من قاعدة البيانات إلى الـ ViewModel
+    var model = new ProfileViewModel {
+        Id = user.Id,                          // من: AspNetUsers.Id
+        FullName = user.FullName,              // من: AspNetUsers.FullName
+        Email = user.Email,                    // من: AspNetUsers.Email
+        UserName = user.UserName,              // من: AspNetUsers.UserName
+        EmailConfirmed = user.EmailConfirmed,  // من: AspNetUsers.EmailConfirmed
+        PhoneNumber = user.PhoneNumber,        // من: AspNetUsers.PhoneNumber
     
-    // جلب الأدوار من جدول AspNetUserRoles
-    Roles = (await _userManager.GetRolesAsync(user)).ToArray();
+        // جلب الأدوار من جدول AspNetUserRoles
+        Roles = (await _userManager.GetRolesAsync(user)).ToArray(),
     
-    // جلب صورة الملف الشخصي من المجلد
-    AvatarUrl = FindAvatarUrlForUser(user.Id) ?? "/images/default-avatar.png";
+        // جلب صورة الملف الشخصي من المجلد
+        AvatarUrl = user.ProfilePicture != null ? $"data:image/jpeg;base64,{Convert.ToBase64String(user.ProfilePicture)}" : "/images/default-avatar.png"
+    };
 
-    return Page();
+    return View(model);
 }
 ```
 
@@ -367,7 +370,7 @@ public async Task<IActionResult> OnPostAsync()
 | البريد الإلكتروني | AspNetUsers.Email | SetEmailAsync | Pages/Profile/Index.cshtml.cs |
 | رقم الهاتف | AspNetUsers.PhoneNumber | UpdateAsync | Pages/Profile/Index.cshtml.cs |
 | كلمة المرور | AspNetUsers.PasswordHash | ChangePasswordAsync | Pages/Profile/Index.cshtml.cs |
-| الصورة الشخصية | ملف النظام (wwwroot/uploads/avatars) | FileStream | Pages/Profile/Index.cshtml.cs |
+| الصورة الشخصية | AspNetUsers.ProfilePicture | MemoryStream | Controllers/ProfileController.cs |
 | الأدوار | AspNetUserRoles | AddToRoleAsync / RemoveFromRoleAsync | Services/UserService.cs |
 | تأكيد البريد | AspNetUsers.EmailConfirmed | UpdateAsync | Pages/Profile/Index.cshtml.cs |
 | التحقق الثنائي | AspNetUsers.TwoFactorEnabled | UpdateAsync | Pages/Profile/Index.cshtml.cs |
@@ -433,9 +436,9 @@ var result = await _userManager.UpdateAsync(user);
 
 ## ℹ️ ملاحظات مهمة
 
-⚠️ **الصور الشخصية** تُخزن في النظام، وليس في قاعدة البيانات
-- المسار: `wwwroot/uploads/avatars/{UserId}.{extension}`
-- الامتدادات المسموحة: jpg, jpeg, png, gif
+⚠️ **الصور الشخصية** تُخزن في قاعدة البيانات كـ `byte[]`
+- يتم تحويلها لعرضها في المتصفح باستخدام `Base64`
+- يتم معالجتها باستخدام `MemoryStream` بدلاً من `FileStream`
 - الحد الأقصى للحجم: 5 MB
 
 ⚠️ **الأدوار** تُدار عبر `UserManager`

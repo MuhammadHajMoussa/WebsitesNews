@@ -9,7 +9,7 @@
 │  المستخدم يفتح: https://localhost:7151/Profile                           │
 │                                                                          │
 │  ↓                                                                       │
-│  الطلب يصل إلى: Pages/Profile/Index.cshtml.cs → OnGetAsync()             │
+│  الطلب يصل إلى: ProfileController.cs → Index() (GET)                     │
 └──────────────────────────────────────────────────────────────────────────┘
 
 ┌──────────────────────────────────────────────────────────────────────────┐
@@ -27,7 +27,8 @@
 │  │ UserName    = "mohammad"        │                                     │
 │  │ Email       = "user@test.com"   │                                     │
 │  │ FullName    = "محمد علي"       │                                      │
-│  │ PhoneNumber = "+966501234567"   │                                     │
+│  │ PhoneNumber = "+966501234567"   │                                      │
+│  │ ProfilePicture= <binary data>   │                                      │
 │  │ ... (أعمدة أخرى)               │                                      │
 │  └─────────────────────────────────┘                                     │
 └──────────────────────────────────────────────────────────────────────────┘
@@ -47,21 +48,20 @@
 └──────────────────────────────────────────────────────────────────────────┘
 
 ┌──────────────────────────────────────────────────────────────────────────┐
-│                   4️⃣ جلب الصورة الشخصية من الملف النظام                   │
+│                   4️⃣ جلب الصورة الشخصية من قاعدة البيانات وتحويلها        │
 │                                                                          │
-│  FindAvatarUrlForUser("user-123")                                        │
+│  user.ProfilePicture != null                                             │
+│         ↓ نعم                                                            │
+│  Convert.ToBase64String(user.ProfilePicture)                             │
 │         ↓                                                                │
-│  ابحث في: wwwroot/uploads/avatars/                                      │
-│  عن ملفات تبدأ بـ: user-123.*                                           │
-│         ↓                                                                │
-│  النتيجة: /uploads/avatars/user-123.jpg                                 │
-│  أو استخدم الصورة الافتراضية: /images/default-avatar.png               │
+│  النتيجة: "data:image/jpeg;base64,/9j/4AAQSkZJ..."                       │
+│  (أو الصورة الافتراضية إذا كانت NULL)                                     │
 └──────────────────────────────────────────────────────────────────────────┘
 
 ┌──────────────────────────────────────────────────────────────────────────┐
 │                   5️⃣ ملء نموذج الصفحة بالبيانات                         │
 │                                                                          │
-│  IndexModel model = new IndexModel()                                     │
+│  ProfileViewModel model = new ProfileViewModel()                         │
 │  {                                                                       │
 │      Id = "user-123",                            // من: DB              │
 │      UserName = "mohammad",                      // من: DB              │
@@ -72,7 +72,7 @@
 │      PhoneNumberConfirmed = false,               // من: DB              │
 │      TwoFactorEnabled = false,                   // من: DB              │
 │      Roles = ["Admin", "Author"],                // من: DB (جدول الربط)  │
-│      AvatarUrl = "/uploads/avatars/user-123.jpg"// من: النظام           │
+│      AvatarUrl = "data:image/jpeg;..."           // Base64              │
 │  }                                                                       │
 └──────────────────────────────────────────────────────────────────────────┘
 
@@ -81,7 +81,7 @@
 │                                                                          │
 │  يتم تحويل النموذج إلى HTML:                                            │
 │                                                                          │
-│  <img src="/uploads/avatars/user-123.jpg" />                            │
+│  <img src="data:image/jpeg;base64,/9j/4A..." />                          │
 │  <input value="mohammad" />                                              │
 │  <input value="user@test.com" />                                         │
 │  <input value="محمد علي" />                                             │
@@ -119,24 +119,24 @@
 └──────────────────────────────────────────────────────────────────────────┘
 
 ┌──────────────────────────────────────────────────────────────────────────┐
-│                      9️⃣ معالجة الطلب OnPostAsync()                       │
+│                      9️⃣ معالجة الطلب في Controller (POST)                 │
 │                                                                          │
 │  ✓ تحقق من صحة البيانات (ModelState)                                   │
 │  ✓ احصل على المستخدم الحالي                                            │
 │                                                                          │
-│  إذا كان UserName مختلفاً:                                              │
-│  → await _userManager.SetUserNameAsync(user, UserName)                   │
+│  إذا كان UserName مختلفاً (model.UserName):                               │
+│  → await _userManager.SetUserNameAsync(user, model.UserName)             │
 │     ← تحديث: [AspNetUsers].UserName                                     │
 │                                                                          │
-│  إذا كان Email مختلفاً:                                                │
-│  → await _userManager.SetEmailAsync(user, Email)                         │
+│  إذا كان Email مختلفاً (model.Email):                                     │
+│  → await _userManager.SetEmailAsync(user, model.Email)                   │
 │     ← تحديث: [AspNetUsers].Email                                        │
 │     ← تحديث: [AspNetUsers].NormalizedEmail                              │
 │                                                                          │
 │  تحديث البيانات الأخرى:                                                 │
-│  user.FullName = FullName                                                │
-│  user.PhoneNumber = PhoneNumber                                          │
-│  user.EmailConfirmed = EmailConfirmed                                    │
+│  user.FullName = model.FullName                                          │
+│  user.PhoneNumber = model.PhoneNumber                                    │
+│  user.EmailConfirmed = model.EmailConfirmed                              │
 │  ...                                                                     │
 │  → await _userManager.UpdateAsync(user)                                  │
 │     ← تحديث: [AspNetUsers] الصف بالكامل                                │
@@ -145,9 +145,9 @@
 ┌──────────────────────────────────────────────────────────────────────────┐
 │                    🔟 معالجة تغيير كلمة المرور                           │
 │                                                                          │
-│  إذا أدخل المستخدم كلمة مرور جديدة:                                    │
-│  → await _userManager.ChangePasswordAsync(user, CurrentPassword,         │
-│                                            NewPassword)                  │
+│  إذا أدخل المستخدم كلمة مرور جديدة (model.NewPassword):                    │
+│  → await _userManager.ChangePasswordAsync(user, model.CurrentPassword,     │
+│                                            model.NewPassword)            │
 │     ↓                                                                    │
 │  التحقق من صحة كلمة المرور الحالية                                      │
 │  ← تحديث: [AspNetUsers].PasswordHash (بعد التشفير)                      │
@@ -164,14 +164,11 @@
 │  ② تحقق من حجم الملف: ≤ 5 MB                                           │
 │                                                                          │
 │  ③ احذف الصور القديمة:                                                 │
-│     Delete: wwwroot/uploads/avatars/user-123.*                          │
+│     (لم يعد مطلوباً - الحفظ الآن في قاعدة البيانات)                     │
 │                                                                          │
 │  ④ احفظ الصورة الجديدة:                                                 │
-│     wwwroot/uploads/avatars/user-123.jpg                                │
-│     ← ملف جديد في النظام (وليس في قاعدة البيانات)                      │
-│                                                                          │
-│  ⑤ حدث رابط الصورة:                                                    │
-│     AvatarUrl = "/uploads/avatars/user-123.jpg"                         │
+│     user.ProfilePicture = memoryStream.ToArray()                        │
+│     model.AvatarUrl = "data:image/jpeg;base64,..."                      │
 └──────────────────────────────────────────────────────────────────────────┘
 
 ┌──────────────────────────────────────────────────────────────────────────┐
@@ -185,7 +182,8 @@
 │      [TwoFactorEnabled] = 0,                                             │
 │      [PhoneNumberConfirmed] = 0,                                         │
 │      [LockoutEnd] = NULL,                                                │
-│      [LockoutEnabled] = 1,                                               │
+│      [LockoutEnabled] = 1,                                              │
+│      [ProfilePicture] = <binary data>,                                  │
 │      [AccessFailedCount] = 0                                             │
 │  WHERE [Id] = 'user-123'                                                 │
 │                                                                          │
@@ -254,7 +252,7 @@ WHERE [Id] = @Id
 | الهاتف | PhoneNumber | AspNetUsers | PhoneNumber |
 | تأكيد البريد | EmailConfirmed | AspNetUsers | EmailConfirmed |
 | الأدوار | Roles[] | AspNetUserRoles + AspNetRoles | RoleId / Name |
-| الصورة | AvatarUrl | wwwroot/uploads/avatars | ملف النظام |
+| الصورة | AvatarUrl | AspNetUsers | ProfilePicture |
 
 ---
 
@@ -291,4 +289,3 @@ await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
 | نموذج البيانات | Models/ApplicationUser.cs | - |
 | إدارة الأدوار | Services/UserService.cs | PromoteUserAsync |
 | الإعدادات | Program.cs | - |
-

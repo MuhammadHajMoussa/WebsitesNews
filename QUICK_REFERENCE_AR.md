@@ -23,24 +23,24 @@ NewsSite/
 ├── 📁 Data/
 │   └── ApplicationDbContext.cs ← ✅ تعديل العلاقات هنا
 │
-├── 📁 Pages/
-│   ├── 📁 Profile/
-│   │   ├── Index.cshtml ← ✅ واجهة المستخدم
-│   │   └── Index.cshtml.cs ← ✅ معالجة البيانات (GET/POST)
-│   ├── _ViewStart.cshtml ← تحديد Layout الافتراضي
-│   └── ...
+├── 📁 Controllers/
+│   └── ProfileController.cs ← ✅ معالجة البيانات (GET/POST)
+│
+├── 📁 Models/
+│   └── 📁 ViewModels/
+│       └── ProfileViewModel.cs ← ✅ نموذج بيانات الواجهة
 │
 ├── 📁 Services/
 │   └── UserService.cs ← ✅ خدمات المستخدم والأدوار
 │
 ├── 📁 Views/
+│   ├── 📁 Profile/
+│   │   └── Index.cshtml ← ✅ واجهة المستخدم
 │   ├── 📁 Shared/
 │   │   └── _Layout.cshtml ← ✅ الهيكل الأساسي للموقع
 │   └── ...
 │
 ├── 📁 wwwroot/
-│   ├── 📁 uploads/
-│   │   └── 📁 avatars/ ← ✅ الصور الشخصية
 │   ├── 📁 css/
 │   ├── 📁 js/
 │   ├── 📁 images/
@@ -111,7 +111,7 @@ OnGetAsync() يُستدعى مجدداً
 | إدارة الأدوار | Services/UserService.cs | PromoteUserAsync | C# |
 | تغيير كلمة المرور | Pages/Profile/Index.cshtml.cs | OnPostAsync() | C# |
 | رفع ملف | Pages/Profile/Index.cshtml | Input type=file | HTML |
-| معالجة رفع ملف | Pages/Profile/Index.cshtml.cs | OnPostAsync() | C# (FileStream) |
+| معالجة رفع ملف | Controllers/ProfileController.cs | Index() (POST) | C# (MemoryStream) |
 | تصميم الواجهة | Views/Shared/_Layout.cshtml | - | HTML + Bootstrap |
 | شهادات الأمان | Program.cs | middleware headers | C# |
 | حدود حجم الملفات | Program.cs | ConfigureKestrel, FormOptions | C# |
@@ -318,4 +318,3 @@ user = await _userManager.FindByIdAsync(user.Id);
 3. `CHECKLIST_ADD_NEW_FIELD_AR.md` - خطوات إضافة حقل جديد
 4. `Pages/Profile/Index.cshtml.cs` - مثال عملي
 5. `Models/ApplicationUser.cs` - نموذج البيانات
-

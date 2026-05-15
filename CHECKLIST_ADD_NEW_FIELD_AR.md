@@ -72,20 +72,16 @@ ADD [Biography] nvarchar(max) NULL
 
 ---
 
-### الخطوة 4️⃣: إضافة حقل إلى نموذج صفحة Razor
+### الخطوة 4️⃣: إضافة حقل إلى الـ ViewModel
 
-**الملف**: `Pages/Profile/Index.cshtml.cs`
+**الملف**: `Models/ViewModels/ProfileViewModel.cs`
 
 ```csharp
-public class IndexModel : PageModel
+public class ProfileViewModel
 {
     // ... الحقول الموجودة ...
     
-    [BindProperty]
-    public string FullName { get; set; }
-    
     // ✅ إضافة حقل جديد
-    [BindProperty]
     [StringLength(500, ErrorMessage = "النبذة لا تتجاوز 500 حرف")]
     public string Biography { get; set; }  // النبذة الشخصية
 }
@@ -369,4 +365,3 @@ Update-Database
 
 4. **الخطأ**: HTTP 400 عند الحفظ
    - **الحل**: تحقق من حدود حجم الملفات في `Program.cs`
-
