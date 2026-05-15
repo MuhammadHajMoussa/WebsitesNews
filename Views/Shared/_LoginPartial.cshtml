@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿﻿﻿﻿﻿﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
@@ -11,10 +11,10 @@
         </form>
 
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-page="/Profile/Index">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index">
                 @{
                     var user = await UserManager.GetUserAsync(User);
-                    var avatarUrl = !string.IsNullOrEmpty(user?.AvatarPath) ? user.AvatarPath : "/images/default-avatar.png";
+                    var avatarUrl = user?.ProfilePicture != null ? $"data:image/jpeg;base64,{Convert.ToBase64String(user.ProfilePicture)}" : "/images/default-avatar.png";
                 }
                 <img src="@avatarUrl" class="rounded-circle me-2" style="width: 24px; height: 24px; object-fit: cover;" alt="avatar" />
                 الملف الشخصي

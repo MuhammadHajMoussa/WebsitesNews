@@ -1,0 +1,122 @@
+@model NewsSite.Models.ViewModels.ProfileViewModel
+@{
+    ViewData["Title"] = "الملف الشخصي";
+}
+<!-- تم تفعيل واجهة الملف الشخصي بالاسم المخصص Profile -->
+
+<h2>@ViewData["Title"]</h2>
+
+@if (!string.IsNullOrEmpty(TempData["StatusMessage"] as string))
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["StatusMessage"]
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-controller="Profile" asp-action="Index" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="card">
+                <div class="card-header">
+                    البيانات الشخصية
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            <img id="avatarPreview" src="@Model.AvatarUrl" class="rounded-circle mb-3" alt="Avatar" width="150" height="150" style="object-fit: cover;" />
+                            <div class="form-group mb-3">
+                                <label asp-for="AvatarImage" class="form-label">تغيير الصورة</label>
+                                <input asp-for="AvatarImage" id="avatarInput" type="file" accept="image/*" class="form-control" />
+                                <span asp-validation-for="AvatarImage" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group mb-3">
+                                <label asp-for="UserName" class="form-label">اسم المستخدم</label>
+                                <input asp-for="UserName" class="form-control" />
+                                <span asp-validation-for="UserName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label asp-for="FullName" class="form-label">الاسم الكامل</label>
+                                <input asp-for="FullName" class="form-control" />
+                                <span asp-validation-for="FullName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label asp-for="Email" class="form-label">البريد الإلكتروني</label>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label asp-for="PhoneNumber" class="form-label">رقم الهاتف</label>
+                                <input asp-for="PhoneNumber" class="form-control" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header">تغيير كلمة المرور</div>
+                <div class="card-body">
+                    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#passwordChangeCollapse" aria-expanded="false" aria-controls="passwordChangeCollapse">
+                        لتغيير كلمة المرور انقر هنا
+                    </button>
+                    
+                    <div class="collapse" id="passwordChangeCollapse">
+                        <div class="form-group mb-3">
+                            <label asp-for="CurrentPassword" class="form-label">كلمة المرور الحالية (اتركها فارغة لعدم التغيير)</label>
+                            <input asp-for="CurrentPassword" class="form-control" />
+                            <span asp-validation-for="CurrentPassword" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="NewPassword" class="form-label">كلمة المرور الجديدة</label>
+                            <input asp-for="NewPassword" class="form-control" />
+                            <span asp-validation-for="NewPassword" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="ConfirmPassword" class="form-label">تأكيد كلمة المرور الجديدة</label>
+                            <input asp-for="ConfirmPassword" class="form-control" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">حفظ التغييرات</button>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">معلومات إضافية</div>
+            <div class="card-body">
+                <p><strong>الأدوار:</strong> @(Model.Roles != null && Model.Roles.Any() ? string.Join(", ", Model.Roles) : "لا يوجد")</p>
+                <p><strong>البريد مؤكد:</strong> <span class="badge @(Model.EmailConfirmed ? "bg-success" : "bg-danger")">@(Model.EmailConfirmed ? "نعم" : "لا")</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // معاينة الصورة فور اختيارها قبل الحفظ
+        (function(){
+            var input = document.getElementById('avatarInput');
+            var preview = document.getElementById('avatarPreview');
+            if(!input || !preview) return;
+            input.addEventListener('change', function(e){
+                var file = input.files && input.files[0];
+                if(!file) return;
+                var reader = new FileReader();
+                reader.onload = function(evt){
+                    preview.src = evt.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        })();
+    </script>
+}

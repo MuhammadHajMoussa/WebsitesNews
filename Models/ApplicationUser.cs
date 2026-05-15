@@ -7,5 +7,5 @@ public class ApplicationUser : IdentityUser
     /// <summary>
     /// مسار الصورة الشخصية النسبي (مثل: /uploads/avatars/userid.jpg)
     /// </summary>
-    public string? AvatarPath { get; set; }
+    public byte[]? ProfilePicture { get; set; }
 }

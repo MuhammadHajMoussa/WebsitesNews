@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿﻿using Microsoft.EntityFrameworkCore;
 using NewsSite.Data;
 using NewsSite.Models;
 using NewsSite.Models.ViewModels;
@@ -39,16 +39,16 @@ namespace NewsSite.Services
             return await query.ToListAsync();
         }
 
-        public async Task<News?> GetNewsByIdAsync(int id) // ← السماح بإرجاع null
+        public async Task<News> GetNewsByIdAsync(int id)
         {
-            return await _context.News
+            return (await _context.News
                 .Include(n => n.Category)
                 .Include(n => n.Author)
                 .Include(n => n.Comments)
                 .Include(n => n.Videos)
                 .Include(n => n.Images)
                 .Include(n => n.Documents)
-                .FirstOrDefaultAsync(n => n.Id == id);
+                .FirstOrDefaultAsync(n => n.Id == id))!;
         }
 
         public async Task<int> AddNewsAsync(NewsViewModel model, string userId)

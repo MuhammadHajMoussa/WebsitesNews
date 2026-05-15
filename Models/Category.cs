@@ -11,12 +11,12 @@ namespace NewsSite.Models
 
         [Required]
         [MaxLength(100)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         // Slug is a URL-friendly identifier (lowercase, hyphens)
         [Required]
         [MaxLength(120)]
-        public string Slug { get; set; }
+        public string Slug { get; set; } = string.Empty;
 
         public List<News> News { get; set; } = new List<News>();
     }

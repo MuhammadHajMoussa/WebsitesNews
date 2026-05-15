@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NewsSite.Models;
@@ -54,7 +54,7 @@ public class Video
     public string? FileName { get; set; }
 
     [Required(ErrorMessage = "محتوى الفيديو مطلوب")]
-    public byte[] FileContent { get; set; }
+    public byte[] FileContent { get; set; } = Array.Empty<byte>();
 
     [Required(ErrorMessage = "نوع الفيديو مطلوب")]
     [MaxLength(100, ErrorMessage = "نوع الفيديو لا يجب أن يزيد عن 100 حرف")]
@@ -83,7 +83,7 @@ public class Image
     public string? FileName { get; set; }
 
     [Required(ErrorMessage = "محتوى الصورة مطلوب")]
-    public byte[] FileContent { get; set; }
+    public byte[] FileContent { get; set; } = Array.Empty<byte>();
 
     [Required(ErrorMessage = "نوع الصورة مطلوب")]
     [MaxLength(100, ErrorMessage = "نوع الصورة لا يجب أن يزيد عن 100 حرف")]
@@ -112,7 +112,7 @@ public class Document
     public string? FileName { get; set; }
 
     [Required(ErrorMessage = "محتوى المستند مطلوب")]
-    public byte[] FileContent { get; set; }
+    public byte[] FileContent { get; set; } = Array.Empty<byte>();
 
     [Required(ErrorMessage = "نوع المستند مطلوب")]
     [MaxLength(100, ErrorMessage = "نوع المستند لا يجب أن يزيد عن 100 حرف")]
